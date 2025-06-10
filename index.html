@@ -1,0 +1,1386 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniHub - Downloads e Serviços</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        .menu {
+            display: flex;
+            list-style: none;
+        }
+        .menu li {
+            margin-left: 1.5rem;
+        }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .menu a:hover {
+            color: #3498db;
+        }
+        .hero {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+        }
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+        .search-bar button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* Tabs Styling */
+        .tabs-container {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding: 0 1rem;
+        }
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            border-bottom: 2px solid #e1e1e1;
+            margin-bottom: 2rem;
+        }
+        .tab-item {
+            margin-right: 0.5rem;
+        }
+        .tab-link {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            color: #7f8c8d;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .tab-link:hover {
+            color: #3498db;
+            background-color: #f9f9f9;
+        }
+        .tab-link.active {
+            color: #2c3e50;
+            background-color: #fff;
+            border: 1px solid #e1e1e1;
+            border-bottom: 2px solid #fff;
+            margin-bottom: -2px;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            padding: 1.5rem;
+            background-color: #fff;
+            border-radius: 0 4px 4px 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-content h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        .tab-content p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .product-image {
+            height: 150px;
+            background-color: #f1f1f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-image img {
+            max-width: 80px;
+            max-height: 80px;
+        }
+        .product-info {
+            padding: 1.2rem;
+        }
+        .product-info h3 {
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            text-align: left;
+        }
+        .product-info p {
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .download-btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .download-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+        .footer-section a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-section a:hover {
+            color: #3498db;
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+        }
+        
+        @media (max-width: 768px) {
+            .menu {
+                display: none;
+            }
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            }
+            .tabs {
+                flex-direction: column;
+                border-bottom: none;
+            }
+            .tab-item {
+                margin-right: 0;
+                margin-bottom: 0.3rem;
+            }
+            .tab-link.active {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<script>
+function login(event) {
+    event.preventDefault();
+    const user = document.getElementById("username").value;
+    const pass = document.getElementById("password").value;
+    const errorMsg = document.getElementById("error-message");
+
+    if (user === "suporte" && pass === "925808") {
+        document.getElementById("login-screen").style.display = "none";
+    } else {
+        errorMsg.textContent = "Usuário ou senha incorretos!";
+    }
+}
+</script>
+
+<body>
+    <div id="login-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 9999; background: #f0f2f5;">
+  <div style="display: flex; width: 100%; height: 100%;">
+    
+    <!-- Lado Esquerdo: Formulário -->
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; background: white;">
+      <form onsubmit="return login(event)" style="width: 90%; max-width: 400px; padding: 2rem;">
+        <h2 style="font-size: 2rem; color: #2c3e50; margin-bottom: 0.5rem;">Entrar</h2>
+        <p style="margin-bottom: 1.5rem; color: #7f8c8d;">Acesse sua conta para continuar</p>
+
+        <label for="username" style="display: block; margin-bottom: 0.5rem;">Nome de usuário</label>
+        <input type="text" id="username" placeholder="Digite seu nome de usuário" required
+               style="width: 100%; padding: 0.7rem; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 1rem;">
+
+        <label for="password" style="display: block; margin-bottom: 0.5rem;">Senha</label>
+        <input type="password" id="password" placeholder="Digite sua senha" required
+               style="width: 100%; padding: 0.7rem; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 0.5rem;">
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 0.9rem;">
+          <label><input type="checkbox"> Lembrar de mim</label>
+          <a href="#" style="color: #3498db; text-decoration: none;">Esqueci minha senha</a>
+        </div>
+
+        <button type="submit" style="width: 100%; padding: 0.75rem; background-color: #2c3e50; color: white; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer;">Entrar</button>
+
+        <p id="error-message" style="color: red; margin-top: 1rem; font-size: 0.9rem;"></p>
+      </form>
+    </div>
+
+    <!-- Lado Direito: Imagem -->
+    <div style="flex: 1; background: url('https://i.pinimg.com/736x/13/bc/ac/13bcacf6fb56ee157c20003f8f0c13f9.jpg') center center / cover no-repeat; border-top-right-radius: 8px; border-bottom-right-radius: 8px;">
+    </div>
+  </div>
+</div>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">UniHub</div>
+            <ul class="menu">
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Downloads</a></li>
+                <li><a href="#">Serviços</a></li>
+                <li><a href="#">Suporte</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>UniHub - Soluções Completas</h1>
+        <p>Downloads de software, serviços e suporte técnico especializado</p>
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar software ou serviço...">
+            <button>Buscar</button>
+        </div>
+    </section>
+    
+    <div class="tabs-container">
+        <ul class="tabs">
+            <li class="tab-item"><a href="#tab-software" class="tab-link active">Software</a></li>
+            <li class="tab-item"><a href="#tab-sistemas" class="tab-link">Sistemas</a></li>
+            <li class="tab-item"><a href="#tab-atualizacoes" class="tab-link">Atualizações</a></li>
+            <li class="tab-item"><a href="#tab-drivers" class="tab-link">Drivers/impressora</a></li>
+            <li class="tab-item"><a href="#tab-aplicativos" class="tab-link">Aplicativos</a></li>
+            <li class="tab-item"><a href="#tab-utilitarios" class="tab-link">Utilitários</a></li>
+            <li class="tab-item"><a href="#tab-servicos" class="tab-link">Serviços</a></li>
+        </ul>
+        
+        <!-- Aba Software -->
+        <div id="tab-software" class="tab-content active">
+            <h3>Software em unitech</h3>
+            <div class="products-grid">
+                <!-- Produto 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/driverbooster11.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Driver Booster Pro v11.2.0.46 PT-BR</h3>
+                        <p>aplicativo atualizar drivers antigos ou desatualizados no Windows.</p>
+                        <a href="https://transfer.it/t/xfu2HVtxRZ7R" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <!-- Produto 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/navicat.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Navicat Premium 16</h3>
+                        <p>Navicat Premium é uma ferramenta de desenvolvimento de banco de dados</p>
+                        <a href="https://transfer.it/t/q1uCmR8R3b6A" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/Adobe.jpg" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Adobe Acrobat Reader 24.2.20</h3>
+                        <p>Adobe Reader é um software que permite visualiza arquivos no formato PDF</p>
+                        <a href="https://transfer.it/t/ndfJDM9T0RqQ" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <!-- Produto 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/IPscanner.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>IP Scanner v2.5.1</h3>
+                        <p>Mostra todos os dispositivos de rede, lhe dá acesso às pastas compart, e pode até mesmo des comp remotamente</p>
+                        <a href="https://transfer.it/t/c3nZCd9hRbJR" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 5 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/Anydesk.jpg" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>AnyDesk 6.0</h3>
+                        <p>Instalador do AnyDesk que permite acessar sem conta</p>
+                        <a href="https://transfer.it/t/a81NzFtDFZJY" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 6 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/AOMEI Partition Assistant 10.0.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>AOMEI Partition Assistant 10.0</h3>
+                        <p>AOMEI Partition e um Gerenciador de partições.</p>
+                        <a href="https://transfer.it/t/92iLzQlxiBTa" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 7 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/ApowerREC.jpg" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>ApowerREC 17</h3>
+                        <p>ApowerREC 17 Jonny devs é um programa de grava de tela</p>
+                        <a href="https://transfer.it/t/l1JInY1zibCY" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/Atualizador Database.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Atualizador Database - Unicheff - v.1.0</h3>
+                        <p>Atenção: Backup Recomendado Antes da Atualização! Antes de prosseguir com a instalação do serviço de atualização do MariaDB</p>
+                        <a href="https://transfer.it/t/Qd8zrM9BDDzT" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/audacity.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Audacity 3.4.2</h3>
+                        <p>Audacity é um software livre de edição digital de áudio.</p>
+                        <a href="https://transfer.it/t/BVGqnNlTRZSB" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/balança.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Teste Balança Serial RS232  ACBR</h3>
+                        <p>Programa para Teste Balança Serial RS232  ACBR</p>
+                        <a href="https://transfer.it/t/SPserdl12ZrJ" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/Defender Control v1.9 (1).png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Defender Control v1.9</h3>
+                        <p>Desativa o Windows Defender gratuitamente</p>
+                        <a href="https://transfer.it/t/M4NNXVlVFLTS" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/diskgenios.jpg" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>DiskGenius V5.5.1.1508</h3>
+                        <p>DiskGenius é um software para gerenciamento de partições</p>
+                        <a href="https://transfer.it/t/54ccWY1zXLxS" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/dism.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Dism++10.1.1002</h3>
+                        <p>Dism ++ é um poderoso utilitário usado para manutenção de sistemas Windows e manipulação de imagem de instalação</p>
+                        <a href="https://transfer.it/t/TYJC2U0RkTBD" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/EaseUS backup.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>EASEUS Todo Backup 16.1</h3>
+                        <p>Software para criar backups individuais de discos rígidos completos e diretórios e arquivos.</p>
+                        <a href="https://transfer.it/t/h6A0WV8lAJ6D" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/EaseUS todo.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>EaseUS Todo Backup Home 2024 v16.3.1</h3>
+                        <p>EaseUS Todo Backup Home é um software de backup de dados acessível que pode fazer backup de arquivos e pasta</p>
+                        <a href="https://transfer.it/t/mTGqTI91FB7I" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/download.jpg" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>HiBit Uninstaller</h3>
+                        <p>O software IObit é um utilitário de desinstalação, Ele remove programas, barra de ferramentas e algumas entradas de registro restantes ou plugins de nav</p>
+                        <a href="https://transfer.it/t/zEkJ6J9jTB6D" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/imagemresizer.jpg" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Image Resizer</h3>
+                        <p>Redimensionador de imagem</p>
+                        <a href="https://transfer.it/t/auHujE03SRpY" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/ImageUSB.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>ImageUSB v 1.5.1003</h3>
+                        <p>Ele foi projetado para fazer cópias de arquivos USB com eficiência no nível de bits exato.</p>
+                        <a href="https://transfer.it/t/QqzXaI8z1DhA" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/mongodb.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>MongoDB 7.0.11</h3>
+                        <p>MongoDB é um software de banco de dados orientado a documentos livre</p>
+                        <a href="https://transfer.it/t/nbnH3E1FkTiY" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/Lazesoft.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Lazesoft Recovery Suite 4.5</h3>
+                        <p>Remove senha do Windows, clona discos, recupera arquivos do HD/SSD.</p>
+                        <a href="https://transfer.it/t/OPnQCU1FGDDB" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/Mysql ARM.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Mysql 5.6.10.1</h3>
+                        <p>Mysql para processadores de arquitetura ARM. ( Hyorrana )</p>
+                        <a href="https://transfer.it/t/sActLZ1hjbaL" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/navicat.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Navicat 9.0.12</h3>
+                        <p>Navicat e uma ferramenta de administração de banco de dados</p>
+                        <a href="https://transfer.it/t/3TADPd8B0RTT" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/Navicat Premium17.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Navicat Premium 17</h3>
+                        <p>Navicat Premium é uma ferramenta de desenvolvimento de banco de dados.</p>
+                        <a href="https://transfer.it/t/R94U6Y1hCLhK" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/RevoUninstallerPro.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Revo Uninstaller Pro</h3>
+                        <p>Revo Uninstaller é um desinstalador ele remove quaisquer arquivos e entradas de registro do Windows</p>
+                        <a href="https://transfer.it/t/mHe9fN0zhBhQ" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/rufus.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Rufus 4.4</h3>
+                        <p>Rufus é uma ferramenta que ajuda a formatar e criar drives USB inicializáveis.</p>
+                        <a href="https://transfer.it/t/DW3JiJ1FHbgJ" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/fiscal.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Unicheff Modulo Fiscal - Todas Versões</h3>
+                        <p>Unicheff Modulo Fiscal.</p>
+                        <a href="https:" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/fiscal.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Unicheff Modulo Fiscal - Todas Versões</h3>
+                        <p>Unicheff Modulo Fiscal.</p>
+                        <a href="https" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/fiscal.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Unicheff Modulo Fiscal - Todas Versões</h3>
+                        <p>Unicheff Modulo Fiscal.</p>
+                        <a href="https" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/fiscal.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Unicheff Modulo Fiscal - Todas Versões</h3>
+                        <p>Unicheff Modulo Fiscal.</p>
+                        <a href="https" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/fiscal.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Unicheff Modulo Fiscal - Todas Versões</h3>
+                        <p>Unicheff Modulo Fiscal.</p>
+                        <a href="https" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/fiscal.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Unicheff Modulo Fiscal - Todas Versões</h3>
+                        <p>Unicheff Modulo Fiscal.</p>
+                        <a href="httpsI" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/fiscal.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Unicheff Modulo Fiscal - Todas Versões</h3>
+                        <p>Unicheff Modulo Fiscal.</p>
+                        <a href="https://transfer.it/t/srDoaA0nGbSI" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/fiscal.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Unicheff Modulo Fiscal - Todas Versões</h3>
+                        <p>Unicheff Modulo Fiscal.</p>
+                        <a href="https://transfer.it/t/srDoaA0nGbSI" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/fiscal.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Unicheff Modulo Fiscal - Todas Versões</h3>
+                        <p>Unicheff Modulo Fiscal.</p>
+                        <a href="https://transfer.it/t/srDoaA0nGbSI" class="download-btn">Download</a>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/fiscal.png" alt="Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Unicheff Modulo Fiscal - Todas Versões</h3>
+                        <p>Unicheff Modulo Fiscal.</p>
+                        <a href="https://transfer.it/t/srDoaA0nGbSI" class="download-btn">Download</a>
+                    </div>
+                </div>
+      
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/serve.png" alt="Server">
+                    </div>
+                    <div class="product-info">
+                        <h3>Server OS 2025</h3>
+                        <p>Sistema operacional para servidores com alta disponibilidade e segurança.</p>
+                        <a href="#" class="download-btn">Download</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aba Sistemas -->
+        <div id="tab-sistemas" class="tab-content">
+            <h3>Sistemas Operacionais</h3>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/windows.png" alt="Windows">
+                    </div>
+                    <div class="product-info">
+                        <h3>Windows 10 Sem defende</h3>
+                        <p>Sistema operacional com interface moderna e alta performance.</p>
+                        <a href="https://transfer.it/t/PkPLIrs3jDRJ" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/debian12.jpg" alt="Linux">
+                    </div>
+                    <div class="product-info">
+                        <h3>Debian LTS</h3>
+                        <p>Distribuição Linux com suporte estendido e comunidade ativa.</p>
+                        <a href="#" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/serve.png" alt="Server">
+                    </div>
+                    <div class="product-info">
+                        <h3>Server OS 2025</h3>
+                        <p>Sistema operacional para servidores com alta disponibilidade e segurança.</p>
+                        <a href="#" class="download-btn">Download</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Aba Atualizações -->
+        <div id="tab-atualizacoes" class="tab-content">
+            <h3>Atualizações de Software</h3>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem_pg/primeira.png" alt="Update Unicheff">
+                    </div>
+                    <div class="product-info">
+                        <h3>Instalação UniChef (Para primeira instalacao) 2016.71</h3>
+                        <p>Instalador Unicheff.</p>
+                        <a href="https://transfer.it/t/2q26aM8X0RbZ" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/fiscal.png" alt="Security Update">
+                    </div>
+                    <div class="product-info">
+                        <h3>Atualizador 6.0.2024.200</h3>
+                        <p>Instalador do Unicheff 6.0.2024.200</p>
+                        <a href="https://transfer.it/t/l1tpfd0n3LiS" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/unitech.png" alt="Firmware">
+                    </div>
+                    <div class="product-info">
+                        <h3>Unicheff 7.0.2025.1 - Todas Versões</h3>
+                        <p>Unicheff 7.0.2025.1 - Todas Versões</p>
+                        <a href="https://transfer.it/t/mdf8eMsjyZ5a" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/80/80" alt="Database">
+                    </div>
+                    <div class="product-info">
+                        <h3>UniDB Patch 2025.2</h3>
+                        <p>Correções e otimizações para banco de dados UniDB.</p>
+                        <a href="#" class="download-btn">Download</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Aba Drivers -->
+<div id="tab-drivers" class="tab-content">
+    <h3>DRIVES e IMPRESSORAS</h3>
+    <div class="products-grid">
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/Bematech MP-2500.png" alt="Display Driver">
+            </div>
+            <div class="product-info">
+                <h3>Bematech_MP-2800_Th</h3>
+                <p>Drivers atualizados para Bematech_MP-2800_Th.</p>
+                <a href="https://mega.nz/file/KdVzGSzY#Y2K76uBXnY521lZqSezJRm1t3NO0UlTztD9YkkUH9TM" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/Bematech MP-2500.png" alt="Audio Driver">
+            </div>
+            <div class="product-info">
+                <h3>Drivers Bematech-MP-2500-TH</h3>
+                <p>Pacote completo de drivers para Bematech-MP-2500-TH.</p>
+                <a href="https://transfer.it/t/KZxNXIlhwBxD" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/Daruma DR700.png" alt="Network Driver">
+            </div>
+            <div class="product-info">
+                <h3>Drivers DARUMA DR700 Driver USB-Software</h3>
+                <p>DARUMA DR700 Driver USB-Software.</p>
+                <a href="https://transfer.it/t/GpqaTMkBiDJZ" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/Daruma dr800.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Drivers da Daruman dr800</h3>
+                <p>Drivers Daruman dr800.</p>
+                <a href="https://transfer.it/t/KVcE7Ft3nZ5C" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 5 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/it 200.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver DRIVES IT-200</h3>
+                <p>Driver completo para impressora DRIVES IT-200.</p>
+                <a href="https://transfer.it/t/HgqVCM0hCLSD" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 6 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/Elgin i9.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver I9 FULLn</h3>
+                <p>Driver para impressora I9 FULL.</p>
+                <a href="https://transfer.it/t/PYKUrIt3hJ6Q" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 7 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/IT-100 C3Tech.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver Impressora Térmica Para Recibo Cupom IT-100 C3Tech</h3>
+                <p>Driver Impressora Térmica Para Recibo Cupom IT-100 C3Tech.</p>
+                <a href="https://transfer.it/t/mzH0PA9hmJSb" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 8 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/KP-IM602.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver KP-IM602 - Driver 2024</h3>
+                <p>Driver para KP-IM602 - Driver 2024.</p>
+                <a href="https://transfer.it/t/heNHPI8ljBQQ" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 9 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/Perto.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver pertoPrinter-windows</h3>
+                <p>Driver para impressora pertoPrinter-windows.</p>
+                <a href="https://transfer.it/t/UAWJCd8nXBxY" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 10 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="/api/placeholder/80/80" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver posprinter.POS80.driver.2024.01.11.1</h3>
+                <p>Driver posprinter.POS80.driver.2024.01.11.1.</p>
+                <a href="https://transfer.it/t/JeJPqZ8R3Dpa" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 11 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/epson.jpg" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver procurar impressora na rede epson</h3>
+                <p>Driver procurar impressora na rede epson.</p>
+                <a href="https://transfer.it/t/kJUMaRlXCBpR" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 12 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/ELGIN iX.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver Setup_ELGIN iX V1.02</h3>
+                <p>Driver para impressora Setup_ELGIN iX V1.02.</p>
+                <a href="https://transfer.it/t/sh8SSM91yBxY" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 13 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/EpsonTM-T20X.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver TM_T20-USB</h3>
+                <p>Driver para impressoraTM_T20-USB.</p>
+                <a href="https://transfer.it/t/7efu2JkXhRzC" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 14 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/TM-T88VII.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver TM-T88IV</h3>
+                <p>Driver para impressora TM-T88IV.</p>
+                <a href="https://transfer.it/t/AuM8KZsjGbqR" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 15 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/Utility Elgin i7 Plus.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver Driver Windowsi7plus_v717exe</h3>
+                <p>Driver para impressora Driver Windowsi7plus_v717exe.</p>
+                <a href="https://transfer.it/t/U7ikvctDDLQD" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 16 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/tectoy.jpg" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver Driver_Q4_Windows</h3>
+                <p>Driver para impressora Driver_Q4_Windows.</p>
+                <a href="https://transfer.it/t/lpKHOM0lkDQC" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 17 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/MP-4200.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver driver-bematech-mp-4200</h3>
+                <p>Driver driver-bematech-mp-4200.</p>
+                <a href="https://transfer.it/t/sgo0eYsXkb5Z" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 18 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/i7.i9.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver driver-elgin-i7-i8-e-i9-windows-e-linux</h3>
+                <p>Driver para driver-elgin-i7-i8-e-i9-windows-e-linux.</p>
+                <a href="https://transfer.it/t/mzjhyBlFhTYL" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 19 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/elgin i8.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver driver-elgin-i8-windows</h3>
+                <p>Driver para impressora driver-elgin-i8-windows.</p>
+                <a href="https://transfer.it/t/ZUSqTZkThZYA" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 20 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/EpsonTM-T20X.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver driver-epson-tm-t20x</h3>
+                <p>Driver para impressora driver-epson-tm-t20x.</p>
+                <a href="driver-epson-tm-t20x" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 21 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/Argox OS-214 Plus.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver driver-impressora-argox-windows-linux-mac-rpi</h3>
+                <p>Driver driver-impressora-argox-windows-linux-mac-rpi.</p>
+                <a href="https://transfer.it/t/nU94jQtTVLiZ" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 22 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/Print iD Touch.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver DriverPrintiD_Windows</h3>
+                <p>Driver DriverPrintiD_Windows.</p>
+                <a href="https://transfer.it/t/BvvWfdl3gLyY" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 23 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="imagem/evadin.png" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Drivers_utilidades_EP-26M</h3>
+                <p>Drivers_utilidades_EP-26M.</p>
+                <a href="https://transfer.it/t/ZjM2yJ1h3ZgS" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 24 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="/api/placeholder/80/80" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>DriversJP800</h3>
+                <p>DriversJP800.</p>
+                <a href="https://transfer.it/t/QI4zDF0HzJyD" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 25 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="/api/placeholder/80/80" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver Brother DCP-L5500DN</h3>
+                <p>Driver para multifuncional Brother DCP-L5500DN.</p>
+                <a href="https://example.com/driver-brother-dcpl5500dn" class="download-btn">Download</a>
+            </div>
+        </div>
+        
+        <!-- Novo Produto 26 -->
+        <div class="product-card">
+            <div class="product-image">
+                <img src="/api/placeholder/80/80" alt="Printer Driver">
+            </div>
+            <div class="product-info">
+                <h3>Driver Epson L3250</h3>
+                <p>Driver para impressora tanque de tinta Epson L3250.</p>
+                <a href="https://example.com/driver-epson-l3250" class="download-btn">Download</a>
+            </div>
+        </div>
+    </div>
+</div>
+        
+        <!-- Aba Aplicativos -->
+        <div id="tab-aplicativos" class="tab-content">
+            <h3>Aplicativos Mobile</h3>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/apk.png" alt="Mobile App">
+                    </div>
+                    <div class="product-info">
+                        <h3>APK UniTBLET 19.3 </h3>
+                        <p>Aplicativo de Controle de Mesas e Comandas desenvolvido para ajudar proprietários de bares e restaurantes a gerenciar suas operações de forma mais eficiente.</p>
+                        <a href="https://transfer.it/t/My3iLR9BQJqI" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/apk.png" alt="Security App">
+                    </div>
+                    <div class="product-info">
+                        <h3>APK UniTBLET 18.6</h3>
+                        <p>Aplicativo de Controle de Mesas e Comandas desenvolvido para ajudar proprietários de bares e restaurantes a gerenciar suas operações de forma mais eficiente.</p>
+                        <a href="https://transfer.it/t/wiO9TY0nDbZR" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/apk.png" alt="Productivity App">
+                    </div>
+                    <div class="product-info">
+                        <h3>APK UniTBLET 18.1 </h3>
+                        <p>Aplicativo de Controle de Mesas e Comandas desenvolvido para ajudar proprietários de bares e restaurantes a gerenciar suas operações de forma mais eficiente.</p>
+                        <a href="https://transfer.it/t/7ERPrM0zwTgb" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/apk.png" alt="Streaming App">
+                    </div>
+                    <div class="product-info">
+                        <h3>APK UniTBLET 18.0</h3>
+                        <p>Aplicativo de Controle de Mesas e Comandas desenvolvido para ajudar proprietários de bares e restaurantes a gerenciar suas operações de forma mais eficiente.</p>
+                        <a href="https://transfer.it/t/afsUXMtTGLxa" class="download-btn">Download</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Aba Utilitários -->
+        <div id="tab-utilitarios" class="tab-content">
+            <h3>Utilitários e Ferramentas</h3>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/uniteablet.png" alt="Disk Utility">
+                    </div>
+                    <div class="product-info">
+                        <h3>UniUniTablet__6.0.2025.5_x64</h3>
+                        <p>Ferramenta para fazer a intergração entre sistema e tablet</p>
+                        <a href="https://transfer.it/t/o6fbWY0RhbTL" class="download-btn">Download</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/uniteablet.png" alt="Disk Utility">
+                    </div>
+                    <div class="product-info">
+                        <h3>UniUniTablet_6.0.2025.2_x86</h3>
+                        <p>Ferramenta para fazer a intergração entre sistema e tablet</p>
+                        <a href="https://transfer.it/t/p1mVfY8H3ZpD" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/uniteablet.png" alt="System Cleaner">
+                    </div>
+                    <div class="product-info">
+                        <h3>UniTablet_6.0.2025.2_x64</h3>
+                        <p>Ferramenta para fazer a intergração entre sistema e tablet.</p>
+                        <a href="https://transfer.it/t/XFj5LR0hXJ6Y" class="download-btn">Download</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/uniteablet.png" alt="Network Tool">
+                    </div>
+                    <div class="product-info">
+                        <h3>UniTablet_6.0.2024.9_x86</h3>
+                        <p>Ferramenta para fazer a intergração entre sistema e tablet</p>
+                        <a href="https://transfer.it/t/YxjaKc8DyBZK" class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/CRIARBANCO.png" alt="Backup Tool">
+                    </div>
+                    <div class="product-info">
+                        <h3>Criar banco de dados</h3>
+                        <p>Ferramenta para Criar banco de dados</p>
+                        <a href="https://transfer.it/t/kcomHJ8FzRBY"class="download-btn">Download</a>
+                    </div>
+                </div>
+                
+                   <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/CRIARBANCO.png" alt="Backup Tool">
+                    </div>
+                    <div class="product-info">
+                        <h3>UniConfigurador</h3>
+                        <p>Ferramenta UniConfigurador/p>
+                        <a href= "https://transfer.it/t/TyBHbA9xkZBZ"class="download-btn">Download</a>
+                    </div>
+                </div>
+
+                   <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/INST MYSQL.png" alt="Backup Tool">
+                    </div>
+                    <div class="product-info">
+                        <h3>Instalador MySQLn</h3>
+                        <p>adicionando Porta_3306 AO firewall</p>
+                        <a href="https://transfer.it/t/aQxu2N8hTRpZ" class="download-btn">Download</a>
+                    </div>
+                </div>
+
+                   <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/INST MYSQL.png" alt="Backup Tool">
+                    </div>
+                    <div class="product-info">
+                        <h3>Desinstalador MySQL</h3>
+                        <p>Desinstalador MySQL</p>
+                        <a href="https://transfer.it/t/kiKkKV0TyRbL" class="download-btn">Download</a>
+                    </div>
+                </div>
+
+                   <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/INST MYSQL.png" alt="Backup Tool">
+                    </div>
+                    <div class="product-info">
+                        <h3>Instalador MySQLn</h3>
+                        <p>Instalador MySQLn</p>
+                        <a href="https://transfer.it/t/Or4ZfAs12TiY" class="download-btn">Download</a>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="imagem/uniteablet.png" alt="Network Tool">
+                    </div>
+                    <div class="product-info">
+                        <h3>UniTablet_6.0.2024.9_x86</h3>
+                        <p>Ferramenta para fazer a intergração entre sistema e tablet</p>
+                        <a href="https://transfer.it/t/YxjaKc8DyBZK" class="download-btn">Download</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Aba Serviços -->
+        <!-- Aba Serviços (com links atualizados) -->
+<div id="tab-servicos" class="tab-content">
+    <h3>Links Úteis</h3>
+    <section id="links" class="content-section" style="display: block;">
+        <ul class="link-list">
+            <h1 style="font-weight: bold; text-align: center; color: rgb(6, 8, 138);">Gestores</h1>
+
+            <li><a href="https://app.unichatbot.com.br/ " target="_blank">Unichatbot 🤖</a></li>
+            <li><a href="https://appunidesk.unitechsistemas.com.br/dashboard " target="_blank">Gestor Para celular 📲</a></li>
+            <li><a href="https://gestor.unitechsistemas.com/financeiro " target="_blank">Gestor 🧑‍💻</a></li>
+            <li><a href="https://unidesk.unitechsistemas.com.br/inicio " target="_blank">Unidesk 📊</a></li>
+
+            <h1 style="font-weight: bold; text-align: center; color: rgb(6, 8, 138);">Menucheff</h1>
+
+            <li><a href="https://appdelivery.menucheff.com/gestor " target="_blank">Menucheff 1 Gestor ⚙️</a></li>
+            <li><a href="https://appdelivery.menucheff.com/2673 " target="_blank">Menucheff 1 Cliente 🖥️</a></li>
+            <li><a href="https://menucheff.unitechsistemas.com.br/ " target="_blank">Menucheff 2 Gestor ⚙️</a></li>
+            <li><a href="https://app.menucheff.unitechsistemas.com.br/2673 " target="_blank">Menucheff 2 Cliente 🖥️</a></li>
+            <li><a href="https://cardapiodigital.menucheff.com/1m2673 " target="_blank">Cardapio Mesa 📑</a></li>
+            <li><a href="https://cardapiodigital.menucheff.com/1c2673 " target="_blank">Cardapio Cartão 📑</a></li>
+
+            <h1 style="font-weight: bold; text-align: center; color: rgb(6, 8, 138);">Utilidades</h1>
+
+            <li><a href="https://drive.google.com/drive/folders/1ZD4xogO-_DHWIvXlruXXaesXDzqvgyV9 " target="_blank">Google Drive 📥</a></li>
+            <li><a href="https://atendimento.tecnospeed.com.br/hc/pt-br/articles/4423079221143-Dicion%C3%A1rio-de-dados-NF-e " target="_blank">Guia para Notas Fiscais 📄</a></li>
+            <li><a href="http://www.sintegra.gov.br/" target="_blank">Sintegra</a></li>
+            <li><a href="https://testeportas.com.br/ " target="_blank">Teste de porta 🌎</a></li>
+            <li><a href="https://www.fsist.com.br/ " target="_blank">Baixar NFe 😎</a></li>
+            <li><a href="https://www.nfe.fazenda.gov.br/portal/consultaRecaptcha.aspx?tipoConsulta=resumo&tipoConteudo=7PhJ+gAVw2g=/ " target="_blank">Consultar NFe 📃</a></li>
+            <li><a href="https://dfe-portal.svrs.rs.gov.br/ " target="_blank">Baixar NFe e NFCe Maranhão 🧾</a></li>
+            <li><a href="/phpmyadmin/" target="_blank">PhpMyAdmin Login 😎</a></li>
+            <li><a href="/ct.php/" target="_blank">Registros ☠️</a></li>
+        </ul>
+    </section>
+</div>
+
+    <footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabLinks = document.querySelectorAll('.tab-link');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all tabs
+                    tabLinks.forEach(tab => tab.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = this.getAttribute('href');
+                    document.querySelector(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
