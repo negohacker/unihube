@@ -291,7 +291,16 @@ async function send(data, btn, okMsg) {
   const label = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aguarde...';
   try {
     const res = await fetch(ENDPOINT, {method: 'POST', body: data});
-    const r = await res.json();
+    const txt = await res.text();
+    let r;
+    try { r = JSON.parse(txt); }
+    catch {
+      console.error('Resposta do servidor:', txt);
+      const dica = /^\s*<(!doctype|html)/i.test(txt)
+        ? 'O servidor devolveu HTML em vez de JSON. Confira se o arquivo é .php e se o POST é tratado no topo dele.'
+        : 'Resposta inválida: ' + txt.slice(0, 120);
+      throw new Error(`Erro ${res.status}. ${dica}`);
+    }
     if (!r.success) throw new Error(r.message || 'Falha na operação');
     toast(r.message || okMsg); setTimeout(() => location.reload(), 1200);
   } catch (e) {
