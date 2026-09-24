@@ -88,7 +88,7 @@ footer{background:var(--sec);color:#cbd5e1;text-align:center;padding:1.5rem 1rem
     <nav role="tablist" id="nav">
       <button role="tab" data-tab="software"><i class="fas fa-box"></i><span>Software</span></button>
       <button role="tab" data-tab="drivers"><i class="fas fa-microchip"></i><span>Drivers</span></button>
-      <button role="tab" data-tab="admin"><i class="fas fa-cog"></i><span>Gerenciar</span></button>
+      <button role="tab" data-tab="admin"><i class="fas fa-cog"></i><span>Editor</span></button>
       <button role="tab" data-tab="support"><i class="fas fa-headset"></i><span>Suporte</span></button>
     </nav>
   </div>
@@ -109,7 +109,9 @@ footer{background:var(--sec);color:#cbd5e1;text-align:center;padding:1.5rem 1rem
 
   <section id="v-admin" hidden>
     <div class="panel">
-      <h2><i class="fas fa-cog"></i> Gerenciar itens</h2>
+      <h2><i class="fas fa-cog"></i> Editor do catálogo</h2>
+      <p class="hint" style="margin:0 0 1rem">As alterações ficam só no seu navegador. Para publicar, clique em <b>Exportar data.json</b> e substitua o arquivo no repositório do GitHub.</p>
+      <div class="row" style="margin-bottom:1rem;max-width:420px"><button type="button" class="btn" id="f-export"><i class="fas fa-file-export"></i> Exportar data.json</button><button type="button" class="btn sec" id="f-reset"><i class="fas fa-rotate-left"></i> Descartar rascunho</button></div>
       <div class="subtabs" role="tablist" id="subtabs">
         <button role="tab" data-type="software">Software</button>
         <button role="tab" data-type="drivers">Drivers</button>
@@ -190,10 +192,8 @@ footer{background:var(--sec);color:#cbd5e1;text-align:center;padding:1.5rem 1rem
 <footer>Catálogo Unitech &copy; <span id="year"></span> · Desenvolvido pela equipe Unitech</footer>
 
 <script>
-/* ===== DADOS =====
-   No PHP, substitua o objeto abaixo por:  const CATALOG = <?= json_encode($catalogo, JSON_UNESCAPED_UNICODE|JSON_HEX_TAG) ?>;
-   Cada item: {id, name, version, image, category, description, link, badge} */
-const CATALOG = {
+/* Dados padrão (usados se data.json não carregar). A fonte oficial é o arquivo data.json. */
+let CATALOG = {
   software: [
     {id:6,name:"Image Resizer",version:"123",image:"http://192.168.100.10/imagem_pg/imagemresizer.jpg",category:"utility",description:"Redimensionador de imagem",link:"https://transfer.it/t/auHujE03SRpY",badge:"new"},
     {id:12,name:"EaseUS Todo Backup Home",version:"2024 v16.3.1",image:"http://192.168.100.10/imagem_pg/EaseUS%20todo.png",category:"utility",description:"Software de backup de dados acessível que faz backup de arquivos e pastas.",link:"https://transfer.it/t/mTGqTI91FB7I",badge:"new"},
@@ -211,7 +211,7 @@ const CATS = {
   drivers:{video:"Vídeo",audio:"Áudio",network:"Rede",printer:"Impressora",other:"Outros"}
 };
 const BADGES = {new:"Novo",popular:"Popular",free:"Grátis",critical:"Crítico"};
-const ENDPOINT = ''; // mesmo arquivo PHP; ajuste se necessário
+const DRAFT = 'suporte-hacker-rascunho';
 
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -287,33 +287,34 @@ function edit(id) {
   $('#f-delete').hidden = false; $('#form').scrollIntoView({behavior: 'smooth'});
 }
 
-async function send(data, btn, okMsg) {
-  const label = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aguarde...';
-  try {
-    const res = await fetch(ENDPOINT, {method: 'POST', body: data});
-    const txt = await res.text();
-    let r;
-    try { r = JSON.parse(txt); }
-    catch {
-      console.error('Resposta do servidor:', txt);
-      const dica = /^\s*<(!doctype|html)/i.test(txt)
-        ? 'O servidor devolveu HTML em vez de JSON. Confira se o arquivo é .php e se o POST é tratado no topo dele.'
-        : 'Resposta inválida: ' + txt.slice(0, 120);
-      throw new Error(`Erro ${res.status}. ${dica}`);
-    }
-    if (!r.success) throw new Error(r.message || 'Falha na operação');
-    toast(r.message || okMsg); setTimeout(() => location.reload(), 1200);
-  } catch (e) {
-    toast(e.message || 'Erro de conexão com o servidor.', 'error');
-    btn.disabled = false; btn.innerHTML = label;
-  }
+function persist() { try { localStorage.setItem(DRAFT, JSON.stringify(CATALOG)); } catch {} }
+function refresh() { persist(); renderAdmin(); }
+
+function remove(id) {
+  if (!confirm('Excluir este item? (só no seu rascunho até você exportar o data.json)')) return;
+  CATALOG[state.adminType] = CATALOG[state.adminType].filter(x => x.id != id);
+  refresh(); toast('Item excluído do rascunho.');
 }
 
-function remove(id, btn) {
-  if (!confirm('Excluir este item? Esta ação não pode ser desfeita.')) return;
-  const d = new FormData();
-  d.append('action', 'delete'); d.append('type', state.adminType === 'software' ? 'softwares' : 'drivers'); d.append('id', id);
-  send(d, btn, 'Item excluído.');
+function saveItem() {
+  const list = CATALOG[state.adminType], id = $('#f-id').value;
+  const item = {id: id ? +id : Math.max(0, ...list.map(x => x.id)) + 1};
+  ['name', 'version', 'image', 'category', 'description', 'link', 'badge'].forEach(k => item[k] = $('#f-' + k).value.trim());
+  const idx = list.findIndex(x => x.id == item.id);
+  idx >= 0 ? list[idx] = item : list.push(item);
+  refresh(); toast('Salvo no rascunho. Exporte o data.json para publicar.');
+}
+
+function exportJson() {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(CATALOG, null, 2)], {type: 'application/json'}));
+  a.download = 'data.json'; a.click(); URL.revokeObjectURL(a.href);
+}
+
+function resetDraft() {
+  if (!confirm('Descartar o rascunho e voltar ao data.json publicado?')) return;
+  try { localStorage.removeItem(DRAFT); } catch {}
+  location.reload();
 }
 
 /* ===== Eventos ===== */
@@ -324,18 +325,13 @@ let timer;
 $('#q').addEventListener('input', e => { clearTimeout(timer); timer = setTimeout(() => { state.q = e.target.value; renderList(state.tab); }, 150); });
 $('#admin-grid').addEventListener('click', e => {
   const ed = e.target.closest('[data-edit]'), del = e.target.closest('[data-del]');
-  if (ed) edit(ed.dataset.edit); if (del) remove(del.dataset.del, del);
+  if (ed) edit(ed.dataset.edit); if (del) remove(del.dataset.del);
 });
 $('#f-cancel').addEventListener('click', clearForm);
-$('#f-delete').addEventListener('click', e => remove($('#f-id').value, e.currentTarget));
-$('#form').addEventListener('submit', e => {
-  e.preventDefault();
-  const d = new FormData(), id = $('#f-id').value;
-  d.append('action', 'save'); d.append('type', state.adminType === 'software' ? 'softwares' : 'drivers');
-  if (id) d.append('id', id);
-  ['name', 'version', 'image', 'category', 'description', 'link', 'badge'].forEach(k => d.append(k, $('#f-' + k).value.trim()));
-  send(d, $('#f-save'), 'Salvo com sucesso.');
-});
+$('#f-delete').addEventListener('click', e => remove($('#f-id').value));
+$('#form').addEventListener('submit', e => { e.preventDefault(); saveItem(); });
+$('#f-export').addEventListener('click', exportJson);
+$('#f-reset').addEventListener('click', resetDraft);
 $('#support-form').addEventListener('submit', e => {
   e.preventDefault();
   const body = `Nome: ${$('#s-name').value}\n\n${$('#s-msg').value}`;
@@ -343,8 +339,15 @@ $('#support-form').addEventListener('submit', e => {
 });
 
 $('#year').textContent = new Date().getFullYear();
-const start = location.hash.slice(1);
-show(['software', 'drivers', 'admin', 'support'].includes(start) ? start : 'software');
+(async function init() {
+  try {
+    const draft = localStorage.getItem(DRAFT);
+    if (draft) CATALOG = JSON.parse(draft);
+    else { const r = await fetch('data.json', {cache: 'no-cache'}); if (r.ok) CATALOG = await r.json(); }
+  } catch {}
+  const start = location.hash.slice(1);
+  show(['software', 'drivers', 'admin', 'support'].includes(start) ? start : 'software');
+})();
 </script>
 </body>
 </html>
