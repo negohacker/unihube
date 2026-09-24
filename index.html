@@ -1,1973 +1,341 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Suporte Hacker - Software e Drivers</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      /* Cores */
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --secondary: #1e293b;
-      --secondary-light: #334155;
-      --light: #f8fafc;
-      --light-gray: #e2e8f0;
-      --medium-gray: #94a3b8;
-      --dark-gray: #475569;
-      --dark: #0f172a;
-      --success: #10b981;
-      --danger: #ef4444;
-      --danger-hover: #dc2626;
-      --warning: #f59e0b;
-      --warning-hover: #d97706;
-      
-      /* Espaçamentos */
-      --radius-sm: 4px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-      --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-      
-      /* Transições */
-      --transition-fast: 0.15s ease;
-      --transition-normal: 0.3s ease;
-    }
-
-    /* Reset e Base */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background-color: var(--light);
-      color: var(--dark);
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* Tipografia */
-    h1, h2, h3 {
-      font-weight: 600;
-      line-height: 1.25;
-      color: var(--dark);
-    }
-
-    h1 { font-size: 2.5rem; }
-    h2 { font-size: 2rem; }
-    h3 { font-size: 1.5rem; }
-
-    @media (max-width: 768px) {
-      h1 { font-size: 2rem; }
-      h2 { font-size: 1.75rem; }
-      h3 { font-size: 1.25rem; }
-    }
-
-    /* Layout Principal */
-    .app-container {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .main-content {
-      flex: 1;
-      padding-bottom: 2rem;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-
-    /* Cabeçalho */
-    .header {
-      background: linear-gradient(rgba(30, 41, 59, 0.9), rgba(30, 41, 59, 0.95)), 
-                  url('https://i.pinimg.com/736x/9d/d7/7f/9dd77fe1c48372d358ed684098bbe1b4.jpg') no-repeat center center/cover;
-      color: white;
-      padding: 2rem 0;
-      box-shadow: var(--shadow-md);
-      position: relative;
-      z-index: 10;
-    }
-
-    .header-content {
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .header-title {
-      margin-bottom: 0.5rem;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .header-subtitle {
-      color: rgba(255,255,255,0.9);
-      margin-bottom: 1.5rem;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-    }
-
-    /* Navegação */
-    .nav {
-      background-color: var(--secondary-light);
-      display: flex;
-      justify-content: center;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .nav-link {
-      color: white;
-      text-decoration: none;
-      padding: 1rem 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 500;
-      transition: background-color var(--transition-fast);
-      position: relative;
-    }
-
-    .nav-link:hover {
-      background-color: rgba(255,255,255,0.1);
-    }
-
-    .nav-link.active {
-      background-color: var(--primary);
-    }
-
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background-color: white;
-    }
-
-    /* Barra de Pesquisa */
-    .search-section {
-      background-color: white;
-      padding: 1.5rem;
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 2rem;
-    }
-
-    .search-container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .search-bar {
-      display: flex;
-      gap: 0.75rem;
-    }
-
-    .search-input-container {
-      flex: 1;
-      position: relative;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--medium-gray);
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 0.75rem 1rem 0.75rem 2.5rem;
-      border: 2px solid var(--light-gray);
-      border-radius: var(--radius-md);
-      font-size: 1rem;
-      transition: all var(--transition-fast);
-    }
-
-    .search-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-      outline: none;
-    }
-
-    .search-btn {
-      padding: 0 1.5rem;
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      border-radius: var(--radius-md);
-      font-weight: 500;
-      cursor: pointer;
-      transition: background-color var(--transition-fast);
-    }
-
-    .search-btn:hover {
-      background-color: var(--primary-hover);
-    }
-
-    .filter-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-
-    .filter-btn {
-      padding: 0.5rem 1rem;
-      background-color: var(--light-gray);
-      border: none;
-      border-radius: 1.5rem;
-      font-size: 0.875rem;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-    }
-
-    .filter-btn:hover {
-      background-color: #d1d5db;
-    }
-
-    .filter-btn.active {
-      background-color: var(--primary);
-      color: white;
-    }
-
-    /* Conteúdo das Abas */
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .section-title {
-      text-align: center;
-      margin: 2rem 0;
-      position: relative;
-    }
-
-    .section-title::after {
-      content: '';
-      display: block;
-      width: 60px;
-      height: 4px;
-      background-color: var(--primary);
-      margin: 0.75rem auto 0;
-      border-radius: 2px;
-    }
-
-    /* Grid de Produtos */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-
-    @media (max-width: 768px) {
-      .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      }
-    }
-
-    /* Card de Produto */
-    .product-card {
-      background-color: white;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-      transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .product-badge {
-      position: absolute;
-      top: 0.75rem;
-      right: 0.75rem;
-      padding: 0.25rem 0.75rem;
-      border-radius: 1rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: white;
-      z-index: 2;
-    }
-
-    .badge-new { background-color: var(--primary); }
-    .badge-popular { background-color: var(--success); }
-    .badge-free { background-color: var(--warning); }
-    .badge-critical { background-color: var(--danger); }
-
-    .product-image-container {
-      height: 180px;
-      background-color: #f1f5f9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      position: relative;
-    }
-
-    .product-image {
-      max-height: 100%;
-      object-fit: contain;
-    }
-
-    .product-content {
-      padding: 1.25rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .product-title {
-      margin-bottom: 0.5rem;
-      font-size: 1.125rem;
-    }
-
-    .product-description {
-      color: var(--dark-gray);
-      margin-bottom: 1rem;
-      flex: 1;
-    }
-
-    .product-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.875rem;
-      color: var(--medium-gray);
-      margin-bottom: 1rem;
-    }
-
-    .product-version {
-      font-family: 'Roboto Mono', monospace;
-    }
-
-    .product-rating {
-      color: #f59e0b;
-    }
-
-    .download-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.75rem;
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      border-radius: var(--radius-md);
-      font-weight: 500;
-      text-decoration: none;
-      cursor: pointer;
-      transition: background-color var(--transition-fast);
-    }
-
-    .download-btn:hover {
-      background-color: var(--primary-hover);
-    }
-
-    /* Painel de Administração */
-    .admin-panel {
-      background-color: white;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
-      padding: 2rem;
-      margin-bottom: 2rem;
-      display: none;
-    }
-
-    .admin-tabs {
-      display: flex;
-      border-bottom: 1px solid var(--light-gray);
-      margin-bottom: 1.5rem;
-      list-style: none;
-    }
-
-    .admin-tab {
-      padding: 0.75rem 1.5rem;
-      cursor: pointer;
-      font-weight: 500;
-      color: var(--dark-gray);
-      border-bottom: 3px solid transparent;
-      transition: all var(--transition-fast);
-    }
-
-    .admin-tab:hover {
-      color: var(--primary);
-    }
-
-    .admin-tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
-    .admin-form {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
-    .form-group.full-width {
-      grid-column: 1 / -1;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      color: var(--dark);
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 2px solid var(--light-gray);
-      border-radius: var(--radius-md);
-      font-size: 1rem;
-      transition: all var(--transition-fast);
-    }
-
-    .form-control:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-      outline: none;
-    }
-
-    textarea.form-control {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    .form-actions {
-      grid-column: 1 / -1;
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      margin-top: 1rem;
-      position: relative;
-    }
-
-    .btn {
-      padding: 0.75rem 1.5rem;
-      border-radius: var(--radius-md);
-      font-weight: 500;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      border: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      position: relative;
-    }
-
-    .btn-primary {
-      background-color: var(--primary);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background-color: var(--primary-hover);
-    }
-
-    .btn-secondary {
-      background-color: var(--light-gray);
-      color: var(--dark);
-    }
-
-    .btn-secondary:hover {
-      background-color: #d1d5db;
-    }
-
-    .btn-danger {
-      background-color: var(--danger);
-      color: white;
-    }
-
-    .btn-danger:hover {
-      background-color: var(--danger-hover);
-    }
-
-    .btn-warning {
-      background-color: var(--warning);
-      color: white;
-    }
-
-    .btn-warning:hover {
-      background-color: var(--warning-hover);
-    }
-
-    /* Ações do Produto */
-    .product-actions {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 1rem;
-    }
-
-    .action-btn {
-      flex: 1;
-      padding: 0.5rem;
-      border-radius: var(--radius-md);
-      font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      border: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    /* Rodapé */
-    .footer {
-      background-color: var(--secondary);
-      color: white;
-      padding: 2rem 0;
-      margin-top: 3rem;
-    }
-
-    .footer-content {
-      text-align: center;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-
-    .footer-link {
-      color: rgba(255,255,255,0.8);
-      text-decoration: none;
-      transition: color var(--transition-fast);
-    }
-
-    .footer-link:hover {
-      color: white;
-    }
-
-    .copyright {
-      margin-top: 1.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.6);
-      font-size: 0.875rem;
-    }
-
-    /* Mensagens */
-    .empty-message {
-      text-align: center;
-      padding: 3rem;
-      color: var(--medium-gray);
-      grid-column: 1 / -1;
-    }
-
-    .empty-message i {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      color: var(--light-gray);
-    }
-
-    /* NOVOS ESTILOS PARA SUPORTE */
-    .support-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    .support-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .support-card {
-      background-color: white;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-sm);
-      padding: 1.5rem;
-      transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-    }
-
-    .support-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .support-card h3 {
-      margin-bottom: 1rem;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .contact-info {
-      list-style: none;
-    }
-
-    .contact-info li {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    .contact-info i {
-      color: var(--primary);
-      min-width: 24px;
-    }
-
-    .faq-item {
-      margin-bottom: 1.5rem;
-    }
-
-    .faq-question {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      cursor: pointer;
-    }
-
-    .faq-question i {
-      color: var(--primary);
-      transition: transform var(--transition-fast);
-    }
-
-    .faq-answer {
-      color: var(--dark-gray);
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height var(--transition-normal);
-      padding-left: 1.75rem;
-    }
-
-    .faq-answer.show {
-      max-height: 500px;
-    }
-
-    .support-form .form-group {
-      margin-bottom: 1.25rem;
-    }
-
-    .form-status {
-      padding: 1rem;
-      border-radius: var(--radius-md);
-      margin-top: 1rem;
-      display: none;
-    }
-
-    .form-status.success {
-      background-color: rgba(16, 185, 129, 0.1);
-      color: var(--success);
-      display: block;
-    }
-
-    .form-status.error {
-      background-color: rgba(239, 68, 68, 0.1);
-      color: var(--danger);
-      display: block;
-    }
-
-    @media (max-width: 768px) {
-      .support-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Loading Spinner */
-    .spinner {
-      border: 2px solid rgba(0, 0, 0, 0.1);
-      border-top: 2px solid var(--primary);
-      border-radius: 50%;
-      width: 16px;
-      height: 16px;
-      animation: spin 1s linear infinite;
-      display: none;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* Notifications */
-    .notification-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1000;
-      max-width: 350px;
-      width: 100%;
-    }
-
-    .notification {
-      padding: 15px 20px;
-      border-radius: var(--radius-md);
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: var(--shadow-md);
-      transform: translateX(120%);
-      transition: transform 0.3s ease;
-    }
-
-    .notification.show {
-      transform: translateX(0);
-    }
-
-    .notification.success {
-      background-color: rgba(16, 185, 129, 0.9);
-      color: white;
-    }
-
-    .notification.error {
-      background-color: rgba(239, 68, 68, 0.9);
-      color: white;
-    }
-
-    .notification .icon {
-      font-size: 20px;
-    }
-
-    /* Progress Bar */
-    .progress-bar {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 3px;
-      background-color: rgba(255, 255, 255, 0.5);
-      width: 100%;
-      overflow: hidden;
-    }
-
-    .progress-bar::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 3px;
-      width: 100%;
-      background-color: white;
-      transform: translateX(-100%);
-      animation: progress 3s linear forwards;
-    }
-
-    @keyframes progress {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(0); }
-    }
-
-    /* Overlay */
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 999;
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Responsividade */
-    @media (max-width: 640px) {
-      .nav {
-        flex-wrap: wrap;
-      }
-      
-      .nav-link {
-        flex: 1 0 50%;
-        justify-content: center;
-        padding: 0.75rem;
-        font-size: 0.875rem;
-      }
-      
-      .search-bar {
-        flex-direction: column;
-      }
-      
-      .search-btn {
-        padding: 0.75rem;
-      }
-      
-      .admin-form {
-        grid-template-columns: 1fr;
-      }
-      
-      .form-actions {
-        flex-direction: column;
-      }
-      
-      .btn {
-        width: 100%;
-      }
-
-      .notification-container {
-        top: 10px;
-        right: 10px;
-        left: 10px;
-        max-width: 100%;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .product-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .product-actions {
-        flex-direction: column;
-      }
-      
-      .action-btn {
-        width: 100%;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Suporte Hacker - Software e Drivers</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--pri:#2563eb;--pri-h:#1d4ed8;--sec:#1e293b;--bg:#f1f5f9;--card:#fff;--line:#e2e8f0;--mut:#64748b;--txt:#0f172a;--ok:#10b981;--err:#ef4444;--warn:#f59e0b;--r:10px}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1220;--card:#131c2e;--line:#243047;--mut:#94a3b8;--txt:#e5e9f0}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--txt);line-height:1.55;min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--pri)}
+:focus-visible{outline:3px solid rgba(37,99,235,.55);outline-offset:2px}
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding:0 1.25rem}
+header{background:var(--sec);color:#fff;position:sticky;top:0;z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.9rem 0;flex-wrap:wrap}
+.brand h1{font-size:1.35rem;line-height:1.2}
+.brand p{font-size:.85rem;color:#cbd5e1}
+nav{display:flex;gap:.25rem}
+nav button{background:none;border:0;color:#e2e8f0;padding:.6rem 1rem;border-radius:8px;font:inherit;font-weight:500;cursor:pointer;display:flex;gap:.5rem;align-items:center}
+nav button:hover{background:rgba(255,255,255,.1)}
+nav button[aria-selected=true]{background:var(--pri);color:#fff}
+.tools{background:var(--card);border-bottom:1px solid var(--line);padding:1rem 0}
+.search{display:flex;gap:.5rem;max-width:720px;margin:0 auto}
+.search label{flex:1;position:relative}
+.search i{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:var(--mut)}
+input,select,textarea{width:100%;padding:.7rem 1rem;border:2px solid var(--line);border-radius:8px;font:inherit;background:var(--card);color:var(--txt)}
+.search input{padding-left:2.4rem}
+input:focus,select:focus,textarea:focus{border-color:var(--pri);outline:none}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-top:.8rem}
+.chip{border:0;background:var(--line);color:var(--txt);padding:.35rem .9rem;border-radius:99px;font:inherit;font-size:.85rem;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--pri);color:#fff}
+main{flex:1;padding:1.5rem 0 2rem}
+h2{font-size:1.5rem;margin:.5rem 0 1rem}
+.count{color:var(--mut);font-size:.9rem;font-weight:400}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.25rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.thumb{height:150px;background:#e8eef6;display:flex;align-items:center;justify-content:center;position:relative;padding:.75rem}
+@media(prefers-color-scheme:dark){.thumb{background:#1a2438}}
+.thumb img{max-height:100%;object-fit:contain}
+.thumb .ph{font-size:2.5rem;color:var(--mut)}
+.badge{position:absolute;top:.6rem;right:.6rem;padding:.15rem .7rem;border-radius:99px;font-size:.75rem;font-weight:600;color:#fff}
+.b-new{background:var(--pri)}.b-popular{background:var(--ok)}.b-free{background:var(--warn)}.b-critical{background:var(--err)}
+.body{padding:1rem 1.1rem 1.1rem;display:flex;flex-direction:column;flex:1;gap:.5rem}
+.body h3{font-size:1.05rem}
+.desc{color:var(--mut);font-size:.92rem;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.meta{font-size:.82rem;color:var(--mut);display:flex;justify-content:space-between;gap:.5rem}
+.meta code{font-family:ui-monospace,Menlo,monospace}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.65rem 1.1rem;border:0;border-radius:8px;font:inherit;font-weight:500;cursor:pointer;text-decoration:none;color:#fff;background:var(--pri)}
+.btn:hover{background:var(--pri-h)}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.sec{background:var(--line);color:var(--txt)}.btn.warn{background:var(--warn)}.btn.err{background:var(--err)}
+.row{display:flex;gap:.6rem}.row .btn{flex:1;padding:.5rem}
+.empty{grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--mut)}
+.empty i{font-size:2.5rem;display:block;margin-bottom:.75rem}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:1.5rem;margin-bottom:1.5rem}
+.subtabs{display:flex;gap:.25rem;border-bottom:1px solid var(--line);margin-bottom:1.25rem}
+.subtabs button{background:none;border:0;border-bottom:3px solid transparent;padding:.6rem 1.2rem;font:inherit;font-weight:500;color:var(--mut);cursor:pointer}
+.subtabs button[aria-selected=true]{color:var(--pri);border-color:var(--pri)}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.form .full{grid-column:1/-1}
+.form label{font-weight:500;font-size:.9rem;display:block;margin-bottom:.3rem}
+textarea{min-height:100px;resize:vertical}
+.actions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:.75rem;flex-wrap:wrap}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem}
+details{border-bottom:1px solid var(--line);padding:.6rem 0}
+summary{cursor:pointer;font-weight:600}
+details ul{margin:.6rem 0 .2rem 1.5rem;display:grid;gap:.35rem}
+.info{list-style:none;display:grid;gap:.8rem}
+.info i{color:var(--pri);width:1.4rem}
+.hint{font-size:.85rem;color:var(--mut);margin-top:.75rem}
+.toasts{position:fixed;top:1rem;right:1rem;z-index:100;display:grid;gap:.5rem;max-width:340px}
+.toast{padding:.8rem 1.1rem;border-radius:8px;color:#fff;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.toast.success{background:var(--ok)}.toast.error{background:var(--err)}
+footer{background:var(--sec);color:#cbd5e1;text-align:center;padding:1.5rem 1rem;font-size:.9rem}
+[hidden]{display:none!important}
+@media(max-width:640px){.top{justify-content:center;text-align:center}nav{width:100%}nav button{flex:1;justify-content:center;padding:.6rem .3rem;font-size:.85rem}nav span{display:none}.actions .btn{width:100%}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
 </head>
-<body class="app-container">
-  <!-- Notifications Container -->
-  <div class="notification-container" id="notificationContainer"></div>
+<body>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
-  <!-- Loading Overlay -->
-  <div class="overlay" id="loadingOverlay">
-    <div class="spinner" style="width: 50px; height: 50px;"></div>
-  </div>
-
-  <!-- Cabeçalho -->
-  <header class="header">
-    <div class="container">
-      <div class="header-content">
-        <h1 class="header-title">Suporte Hacker</h1>
-        <p class="header-subtitle">Gerenciamento de Software e Drivers</p>
-      </div>
-    </div>
-    
-    <!-- Navegação -->
-    <nav class="nav">
-      <a href="#" class="nav-link active" data-tab="software">
-        <i class="fas fa-box"></i>
-        <span>Software</span>
-      </a>
-      <a href="#" class="nav-link" data-tab="drivers">
-        <i class="fas fa-microchip"></i>
-        <span>Drivers</span>
-      </a>
-      <a href="#" class="nav-link" data-tab="admin">
-        <i class="fas fa-cog"></i>
-        <span>Gerenciar</span>
-      </a>
-      <a href="#" class="nav-link" data-tab="support">
-        <i class="fas fa-headset"></i>
-        <span>Suporte</span>
-      </a>
+<header>
+  <div class="wrap top">
+    <div class="brand"><h1>Suporte Hacker</h1><p>Gerenciamento de Software e Drivers</p></div>
+    <nav role="tablist" id="nav">
+      <button role="tab" data-tab="software"><i class="fas fa-box"></i><span>Software</span></button>
+      <button role="tab" data-tab="drivers"><i class="fas fa-microchip"></i><span>Drivers</span></button>
+      <button role="tab" data-tab="admin"><i class="fas fa-cog"></i><span>Gerenciar</span></button>
+      <button role="tab" data-tab="support"><i class="fas fa-headset"></i><span>Suporte</span></button>
     </nav>
-  </header>
+  </div>
+</header>
 
-  <!-- Conteúdo Principal -->
-  <main class="main-content">
-    <!-- Barra de Pesquisa -->
-    <section class="search-section">
-      <div class="container">
-        <div class="search-container">
-          <div class="search-bar">
-            <div class="search-input-container">
-              <i class="fas fa-search search-icon"></i>
-              <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar...">
-            </div>
-            <button class="search-btn" id="searchBtn">
-              <i class="fas fa-search"></i>
-              <span class="search-btn-text">Buscar</span>
-            </button>
-          </div>
-          <div class="filter-container" id="filterContainer">
-            <!-- Filtros serão inseridos dinamicamente -->
-          </div>
+<section class="tools" id="tools">
+  <div class="wrap">
+    <div class="search">
+      <label><i class="fas fa-search"></i><input type="search" id="q" placeholder="Pesquisar por nome ou descrição..." aria-label="Pesquisar"></label>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+</section>
+
+<main class="wrap">
+  <section id="v-software"><h2>Softwares <span class="count"></span></h2><div class="grid"></div></section>
+  <section id="v-drivers" hidden><h2>Drivers <span class="count"></span></h2><div class="grid"></div></section>
+
+  <section id="v-admin" hidden>
+    <div class="panel">
+      <h2><i class="fas fa-cog"></i> Gerenciar itens</h2>
+      <div class="subtabs" role="tablist" id="subtabs">
+        <button role="tab" data-type="software">Software</button>
+        <button role="tab" data-type="drivers">Drivers</button>
+      </div>
+      <form class="form" id="form">
+        <input type="hidden" id="f-id">
+        <div><label for="f-name">Nome</label><input id="f-name" required></div>
+        <div><label for="f-version">Versão</label><input id="f-version" required placeholder="Ex: 11.2.0.46"></div>
+        <div><label for="f-image">URL da imagem (opcional)</label><input id="f-image" type="url" placeholder="https://..."></div>
+        <div><label for="f-category">Categoria</label><select id="f-category" required></select></div>
+        <div class="full"><label for="f-description">Descrição</label><textarea id="f-description" required></textarea></div>
+        <div><label for="f-link">Link de download</label><input id="f-link" type="url" required placeholder="https://..."></div>
+        <div><label for="f-badge">Selo (opcional)</label>
+          <select id="f-badge"><option value="">Nenhum</option><option value="new">Novo</option><option value="popular">Popular</option><option value="free">Grátis</option><option value="critical">Crítico</option></select></div>
+        <div class="actions">
+          <button type="button" class="btn sec" id="f-cancel">Limpar</button>
+          <button type="button" class="btn err" id="f-delete" hidden><i class="fas fa-trash"></i> Excluir</button>
+          <button type="submit" class="btn" id="f-save"><i class="fas fa-save"></i> Salvar</button>
         </div>
-      </div>
-    </section>
+      </form>
+    </div>
+    <h2 id="admin-title">Cadastrados</h2>
+    <div class="grid" id="admin-grid"></div>
+  </section>
 
-    <div class="container">
-      <!-- Aba de Software -->
-      <div id="tab-software" class="tab-content active">
-        <h2 class="section-title">Softwares Disponíveis</h2>
-        <div class="product-grid" id="software-container">
-                                    <div class="product-card">
-                <div class="product-image-container">
-                  <img src="http://192.168.100.10/imagem_pg/imagemresizer.jpg" alt="Image Resizer" class="product-image">
-                                      <span class="product-badge badge-new">
-                      Novo                    </span>
-                                  </div>
-                <div class="product-content">
-                  <h3 class="product-title">Image Resizer</h3>
-                  <p class="product-description">Redimensionador de imagem
-
-</p>
-                  <div class="product-meta">
-                    <span class="product-version">v123</span>
-                    <span class="product-rating">
-                      <i class="fas fa-star"></i> 4.8
-                    </span>
-                  </div>
-                  <a href="https://transfer.it/t/auHujE03SRpY" target="_blank" class="download-btn">
-                    <i class="fas fa-download"></i> Download
-                  </a>
-                </div>
-              </div>
-                          <div class="product-card">
-                <div class="product-image-container">
-                  <img src="http://192.168.100.10/imagem_pg/EaseUS%20todo.png" alt="EaseUS Todo Backup Home  " class="product-image">
-                                      <span class="product-badge badge-new">
-                      Novo                    </span>
-                                  </div>
-                <div class="product-content">
-                  <h3 class="product-title">EaseUS Todo Backup Home  </h3>
-                  <p class="product-description">EaseUS Todo Backup Home é um software de backup de dados acessível que pode fazer backup de arquivos e pasta
-
- </p>
-                  <div class="product-meta">
-                    <span class="product-version">v 2024 v16.3.1</span>
-                    <span class="product-rating">
-                      <i class="fas fa-star"></i> 4.8
-                    </span>
-                  </div>
-                  <a href="https://transfer.it/t/mTGqTI91FB7I" target="_blank" class="download-btn">
-                    <i class="fas fa-download"></i> Download
-                  </a>
-                </div>
-              </div>
-                          <div class="product-card">
-                <div class="product-image-container">
-                  <img src="http://192.168.100.10/imagem_pg/download.jpg" alt="HiBit Uninstaller" class="product-image">
-                                      <span class="product-badge badge-free">
-                      Grátis                    </span>
-                                  </div>
-                <div class="product-content">
-                  <h3 class="product-title">HiBit Uninstaller</h3>
-                  <p class="product-description">O software IObit é um utilitário de desinstalação, Ele remove programas, barra de ferramentas e algumas entradas de registro restantes ou plugins de nav</p>
-                  <div class="product-meta">
-                    <span class="product-version">v12</span>
-                    <span class="product-rating">
-                      <i class="fas fa-star"></i> 4.8
-                    </span>
-                  </div>
-                  <a href="https://transfer.it/t/zEkJ6J9jTB6D" target="_blank" class="download-btn">
-                    <i class="fas fa-download"></i> Download
-                  </a>
-                </div>
-              </div>
-                              </div>
-      </div>
-
-      <!-- Aba de Drivers -->
-      <div id="tab-drivers" class="tab-content">
-        <h2 class="section-title">Drivers Disponíveis</h2>
-        <div class="product-grid" id="drivers-container">
-                                    <div class="product-card">
-                <div class="product-image-container">
-                  <img src="https://via.placeholder.com/300x180?text=NVIDIA+Driver" alt="Driver de Vídeo NVIDIA" class="product-image">
-                                      <span class="product-badge badge-critical">
-                      Crítico                    </span>
-                                  </div>
-                <div class="product-content">
-                  <h3 class="product-title">Driver de Vídeo NVIDIA</h3>
-                  <p class="product-description">Driver para placas de vídeo NVIDIA série GeForce RTX</p>
-                  <div class="product-meta">
-                    <span class="product-version">v536.99</span>
-                    <span class="product-rating">
-                      <i class="fas fa-star"></i> 4.8
-                    </span>
-                  </div>
-                  <a href="https://www.nvidia.com/download/driverResults.aspx/123456/" target="_blank" class="download-btn">
-                    <i class="fas fa-download"></i> Download
-                  </a>
-                </div>
-              </div>
-                          <div class="product-card">
-                <div class="product-image-container">
-                  <img src="https://via.placeholder.com/300x180?text=Intel+WiFi" alt="Driver Wireless Intel" class="product-image">
-                                  </div>
-                <div class="product-content">
-                  <h3 class="product-title">Driver Wireless Intel</h3>
-                  <p class="product-description">Driver para placas de rede sem fio Intel Wi-Fi 6</p>
-                  <div class="product-meta">
-                    <span class="product-version">v22.180.0.4</span>
-                    <span class="product-rating">
-                      <i class="fas fa-star"></i> 4.8
-                    </span>
-                  </div>
-                  <a href="https://www.intel.com/content/www/us/en/download/123456.html" target="_blank" class="download-btn">
-                    <i class="fas fa-download"></i> Download
-                  </a>
-                </div>
-              </div>
-                          <div class="product-card">
-                <div class="product-image-container">
-                  <img src="http://192.168.100.10/imagem/Bematech%20MP-2500.png" alt="Bematech_MP-2800_Th" class="product-image">
-                                      <span class="product-badge badge-new">
-                      Novo                    </span>
-                                  </div>
-                <div class="product-content">
-                  <h3 class="product-title">Bematech_MP-2800_Th</h3>
-                  <p class="product-description">Drivers atualizados para Bematech_MP-2800_Th</p>
-                  <div class="product-meta">
-                    <span class="product-version">vMP-2800 Th</span>
-                    <span class="product-rating">
-                      <i class="fas fa-star"></i> 4.8
-                    </span>
-                  </div>
-                  <a href="https://mega.nz/file/KdVzGSzY#Y2K76uBXnY521lZqSezJRm1t3NO0UlTztD9YkkUH9TM" target="_blank" class="download-btn">
-                    <i class="fas fa-download"></i> Download
-                  </a>
-                </div>
-              </div>
-                          <div class="product-card">
-                <div class="product-image-container">
-                  <img src="https://m.media-amazon.com/images/I/5136-7EOzuL._AC_SX679_.jpg" alt="Driver KP-IM602  " class="product-image">
-                                      <span class="product-badge badge-new">
-                      Novo                    </span>
-                                  </div>
-                <div class="product-content">
-                  <h3 class="product-title">Driver KP-IM602  </h3>
-                  <p class="product-description">https://m.media-amazon.com/images/I/5136-7EOzuL._AC_SX679_.jpghttps://m.media-amazon.com/images/I/5136-7EOzuL._AC_SX679_.jpghttps://m.media-amazon.com/images/I/5136-7EOzuL._AC_SX679_.jpg</p>
-                  <div class="product-meta">
-                    <span class="product-version">vDriver 2024</span>
-                    <span class="product-rating">
-                      <i class="fas fa-star"></i> 4.8
-                    </span>
-                  </div>
-                  <a href="https://m.media-amazon.com/images/I/5136-7EOzuL._AC_SX679_.jpg" target="_blank" class="download-btn">
-                    <i class="fas fa-download"></i> Download
-                  </a>
-                </div>
-              </div>
-                              </div>
-      </div>
-
-      <!-- Painel de Administração -->
-      <div class="admin-panel" id="admin-panel">
-        <h2 class="section-title">
-          <i class="fas fa-cog"></i>
-          <span id="admin-panel-title">Gerenciar Itens</span>
-        </h2>
-        
-        <ul class="admin-tabs">
-          <li class="admin-tab active" data-admin-tab="software">Software</li>
-          <li class="admin-tab" data-admin-tab="drivers">Drivers</li>
+  <section id="v-support" hidden>
+    <h2>Central de suporte</h2>
+    <div class="sgrid">
+      <div class="panel">
+        <h3><i class="fas fa-headset"></i> Contato</h3><br>
+        <ul class="info">
+          <li><i class="fas fa-phone"></i>(11) 99999-9999</li>
+          <li><i class="fas fa-envelope"></i>suporte@tech.com.br</li>
+          <li><i class="fas fa-clock"></i>Seg a Sex: 8h às 18h<br>Sáb: 9h às 13h</li>
+          <li><i class="fas fa-map-marker-alt"></i>Av. Paulista, 1000 - São Paulo/SP</li>
         </ul>
-        
-        <!-- Formulário de Software -->
-        <form id="admin-software-form" class="admin-form">
-          <input type="hidden" id="software-id">
-          
-          <div class="form-group">
-            <label for="software-name" class="form-label">Nome do Software</label>
-            <input type="text" id="software-name" class="form-control" placeholder="Ex: Driver Booster Pro" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="software-version" class="form-label">Versão</label>
-            <input type="text" id="software-version" class="form-control" placeholder="Ex: 11.2.0.46" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="software-image" class="form-label">URL da Imagem</label>
-            <input type="url" id="software-image" class="form-control" placeholder="https://exemplo.com/imagem.jpg" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="software-category" class="form-label">Categoria</label>
-            <select id="software-category" class="form-control" required>
-              <option value="" disabled selected>Selecione uma categoria</option>
-              <option value="utility">Utilitários</option>
-              <option value="security">Segurança</option>
-              <option value="productivity">Produtividade</option>
-              <option value="database">Banco de Dados</option>
-              <option value="other">Outros</option>
-            </select>
-          </div>
-          
-          <div class="form-group full-width">
-            <label for="software-description" class="form-label">Descrição</label>
-            <textarea id="software-description" class="form-control" placeholder="Descreva o software..." required></textarea>
-          </div>
-          
-          <div class="form-group">
-            <label for="software-link" class="form-label">Link de Download</label>
-            <input type="url" id="software-link" class="form-control" placeholder="https://exemplo.com/download" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="software-badge" class="form-label">Badge (opcional)</label>
-            <select id="software-badge" class="form-control">
-              <option value="" selected>Nenhum</option>
-              <option value="new">Novo</option>
-              <option value="popular">Popular</option>
-              <option value="free">Grátis</option>
-            </select>
-          </div>
-          
-          <div class="form-actions">
-            <button type="button" class="btn btn-secondary" id="software-cancel-btn">
-              Cancelar
-            </button>
-            <button type="button" class="btn btn-danger" id="software-delete-btn" style="display: none;">
-              <i class="fas fa-trash"></i>
-              Excluir
-            </button>
-            <button type="submit" class="btn btn-primary" id="software-save-btn">
-              <i class="fas fa-save"></i>
-              <span class="btn-text">Salvar Software</span>
-              <span class="spinner"></span>
-            </button>
-          </div>
-        </form>
-        
-        <!-- Formulário de Drivers -->
-        <form id="admin-drivers-form" class="admin-form" style="display: none;">
-          <input type="hidden" id="driver-id">
-          
-          <div class="form-group">
-            <label for="driver-name" class="form-label">Nome do Driver</label>
-            <input type="text" id="driver-name" class="form-control" placeholder="Ex: Driver de Vídeo NVIDIA" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="driver-version" class="form-label">Versão</label>
-            <input type="text" id="driver-version" class="form-control" placeholder="Ex: 536.99" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="driver-image" class="form-label">URL da Imagem</label>
-            <input type="url" id="driver-image" class="form-control" placeholder="https://exemplo.com/imagem.jpg" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="driver-category" class="form-label">Categoria</label>
-            <select id="driver-category" class="form-control" required>
-              <option value="" disabled selected>Selecione uma categoria</option>
-              <option value="video">Vídeo</option>
-              <option value="audio">Áudio</option>
-              <option value="network">Rede</option>
-              <option value="printer">Impressora</option>
-              <option value="other">Outros</option>
-            </select>
-          </div>
-          
-          <div class="form-group full-width">
-            <label for="driver-description" class="form-label">Descrição</label>
-            <textarea id="driver-description" class="form-control" placeholder="Descreva o driver..." required></textarea>
-          </div>
-          
-          <div class="form-group">
-            <label for="driver-link" class="form-label">Link de Download</label>
-            <input type="url" id="driver-link" class="form-control" placeholder="https://exemplo.com/download" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="driver-badge" class="form-label">Badge (opcional)</label>
-            <select id="driver-badge" class="form-control">
-              <option value="" selected>Nenhum</option>
-              <option value="new">Novo</option>
-              <option value="critical">Crítico</option>
-              <option value="recommended">Recomendado</option>
-            </select>
-          </div>
-          
-          <div class="form-actions">
-            <button type="button" class="btn btn-secondary" id="driver-cancel-btn">
-              Cancelar
-            </button>
-            <button type="button" class="btn btn-danger" id="driver-delete-btn" style="display: none;">
-              <i class="fas fa-trash"></i>
-              Excluir
-            </button>
-            <button type="submit" class="btn btn-primary" id="driver-save-btn">
-              <i class="fas fa-save"></i>
-              <span class="btn-text">Salvar Driver</span>
-              <span class="spinner"></span>
-            </button>
-          </div>
-        </form>
-        
-        <!-- Lista de Itens para Administração -->
-        <h3 class="section-title">
-          <span id="admin-list-title">Softwares Cadastrados</span>
-        </h3>
-        <div class="product-grid" id="admin-item-grid">
-                      <div class="product-card">
-              <div class="product-image-container">
-                <img src="http://192.168.100.10/imagem_pg/imagemresizer.jpg" alt="Image Resizer" class="product-image">
-                                  <span class="product-badge badge-new">
-                    Novo                  </span>
-                              </div>
-              <div class="product-content">
-                <h3 class="product-title">Image Resizer</h3>
-                <p class="product-description">Redimensionador de imagem
-
-</p>
-                <div class="product-meta">
-                  <span class="product-version">v123</span>
-                  <span>
-                    Utilitários                  </span>
-                </div>
-                <div class="product-actions">
-                  <button class="btn btn-warning edit-btn" data-id="6" data-type="software">
-                    <i class="fas fa-edit"></i> Editar
-                  </button>
-                  <button class="btn btn-danger delete-btn" data-id="6" data-type="software">
-                    <i class="fas fa-trash"></i> 
-                    <span class="btn-text">Excluir</span>
-                    <span class="spinner"></span>
-                  </button>
-                </div>
-              </div>
-            </div>
-                      <div class="product-card">
-              <div class="product-image-container">
-                <img src="http://192.168.100.10/imagem_pg/EaseUS%20todo.png" alt="EaseUS Todo Backup Home  " class="product-image">
-                                  <span class="product-badge badge-new">
-                    Novo                  </span>
-                              </div>
-              <div class="product-content">
-                <h3 class="product-title">EaseUS Todo Backup Home  </h3>
-                <p class="product-description">EaseUS Todo Backup Home é um software de backup de dados acessível que pode fazer backup de arquivos e pasta
-
- </p>
-                <div class="product-meta">
-                  <span class="product-version">v 2024 v16.3.1</span>
-                  <span>
-                    Utilitários                  </span>
-                </div>
-                <div class="product-actions">
-                  <button class="btn btn-warning edit-btn" data-id="12" data-type="software">
-                    <i class="fas fa-edit"></i> Editar
-                  </button>
-                  <button class="btn btn-danger delete-btn" data-id="12" data-type="software">
-                    <i class="fas fa-trash"></i> 
-                    <span class="btn-text">Excluir</span>
-                    <span class="spinner"></span>
-                  </button>
-                </div>
-              </div>
-            </div>
-                      <div class="product-card">
-              <div class="product-image-container">
-                <img src="http://192.168.100.10/imagem_pg/download.jpg" alt="HiBit Uninstaller" class="product-image">
-                                  <span class="product-badge badge-free">
-                    Grátis                  </span>
-                              </div>
-              <div class="product-content">
-                <h3 class="product-title">HiBit Uninstaller</h3>
-                <p class="product-description">O software IObit é um utilitário de desinstalação, Ele remove programas, barra de ferramentas e algumas entradas de registro restantes ou plugins de nav</p>
-                <div class="product-meta">
-                  <span class="product-version">v12</span>
-                  <span>
-                    Segurança                  </span>
-                </div>
-                <div class="product-actions">
-                  <button class="btn btn-warning edit-btn" data-id="13" data-type="software">
-                    <i class="fas fa-edit"></i> Editar
-                  </button>
-                  <button class="btn btn-danger delete-btn" data-id="13" data-type="software">
-                    <i class="fas fa-trash"></i> 
-                    <span class="btn-text">Excluir</span>
-                    <span class="spinner"></span>
-                  </button>
-                </div>
-              </div>
-            </div>
-                  </div>
       </div>
-      
-      <!-- Aba de Suporte -->
-      <div id="tab-support" class="tab-content">
-        <h2 class="section-title">Central de Suporte</h2>
-        
-        <div class="support-container">
-          <div class="support-grid">
-            <!-- Card de Contato -->
-            <div class="support-card">
-              <h3><i class="fas fa-headset"></i> Contato</h3>
-              <ul class="contact-info">
-                <li>
-                  <i class="fas fa-phone"></i>
-                  <span>(11) 99999-9999</span>
-                </li>
-                <li>
-                  <i class="fas fa-envelope"></i>
-                  <span>suporte@tech.com.br</span>
-                </li>
-                <li>
-                  <i class="fas fa-clock"></i>
-                  <span>Segunda a Sexta: 8h às 18h<br>Sábado: 9h às 13h</span>
-                </li>
-                <li>
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>Av. Paulista, 1000<br>São Paulo - SP</span>
-                </li>
-              </ul>
-            </div>
-            
-            <!-- Card de FAQ -->
-            <div class="support-card">
-              <h3><i class="fas fa-question-circle"></i> Perguntas Frequentes</h3>
-              <div class="faq-list">
-                <div class="faq-item">
-                  <div class="faq-question">
-                    <i class="fas fa-chevron-right"></i>
-                    links para menuchef
-                  </div>
-                  <div class="faq-answer">
-                    <p> 
-                      <li><a href="https://appdelivery.menucheff.com/gestor" target="_blank">Menucheff 1 Gestor ⚙️</a></li>
-                      <li><a href="https://appdelivery.menucheff.com/2673" target="_blank">Menucheff 1 Cliente 🖥️</a></li>
-                      <li><a href="https://menucheff.unitechsistemas.com.br/" target="_blank">Menucheff 2 Gestor ⚙️</a></li>
-                      <li><a href="https://app.menucheff.unitechsistemas.com.br/2673" target="_blank">Menucheff 2 Cliente 🖥️</a></li>
-                      <li><a href="https://cardapiodigital.menucheff.com/1m2673" target="_blank">Cardapio Mesa 📑</a></li>
-                      <li><a href="https://cardapiodigital.menucheff.com/1c2673" target="_blank">Cardapio Cartão 📑</a></li>
-                    </p>
-                  </div>
-                </div>
-                
-                <div class="faq-item">
-                  <div class="faq-question">
-                    <i class="fas fa-chevron-right"></i>
-                     links fiscais
-                  </div>
-                  <div class="faq-answer">
-                    <p> 
-                      <li><a href="https://drive.google.com/drive/folders/1ZD4xogO-_DHWIvXlruXXaesXDzqvgyV9" target="_blank">Google Drive 📥</a></li>
-                      <li><a href="https://atendimento.tecnospeed.com.br/hc/pt-br/articles/4423079221143-Dicion%C3%A1rio-de-dados-NF-e" target="_blank">Guia para Notas Fiscais 📄</a></li>
-                      <li><a href="http://www.sintegra.gov.br/" target="_blank">Sintegra</a></li>
-                      <li><a href="https://testeportas.com.br/" target="_blank">Teste de porta 🌎</a></li>
-                      <li><a href="https://www.fsist.com.br/" target="_blank">Baixar NFe 😎</a></li>
-                      <li><a href="https://www.nfe.fazenda.gov.br/portal/consultaRecaptcha.aspx?tipoConsulta=resumo&tipoConteudo=7PhJ+gAVw2g=/" target="_blank">Consultar NFe 📃</a></li>
-                      <li><a href="https://dfe-portal.svrs.rs.gov.br/" target="_blank">Baixar NFe e NFCe Maranhão 🧾</a></li>
-                      <li><a href="/phpmyadmin/" target="_blank">PhpMyAdmin Login 😎</a></li>
-                      <li><a href="/ct.php/" target="_blank">Registros ☠️</a></li>
-                    </p>
-                  </div>
-                </div>
-                
-                <div class="faq-item">
-                  <div class="faq-question">
-                    <i class="fas fa-chevron-right"></i>
-                    Gestores
-                  </div>
-                  <div class="faq-answer">
-                    <p> 
-                      <li><a href="https://app.unichatbot.com.br/" target="_blank">Unichatbot 🤖</a></li>
-                      <li><a href="https://appunidesk.unitechsistemas.com.br/dashboard" target="_blank">Gestor Para celular 📲</a></li>
-                      <li><a href="https://gestor.unitechsistemas.com/financeiro" target="_blank">Gestor 🧑‍💻</a></li>
-                      <li><a href="https://unidesk.unitechsistemas.com.br/inicio" target="_blank">Unidesk 📊</a></li>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Card de Formulário -->
-            <div class="support-card">
-              <h3><i class="fas fa-comments"></i> Envie sua Mensagem</h3>
-              <form id="supportForm" class="support-form">
-                <div class="form-group">
-                  <label for="support-name" class="form-label">Nome</label>
-                  <input type="text" id="support-name" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                  <label for="support-email" class="form-label">E-mail</label>
-                  <input type="email" id="support-email" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                  <label for="support-subject" class="form-label">Assunto</label>
-                  <select id="support-subject" class="form-control" required>
-                    <option value="" disabled selected>Selecione...</option>
-                    <option value="software">Dúvida sobre Software</option>
-                    <option value="driver">Problema com Driver</option>
-                    <option value="account">Assuntos de Conta</option>
-                    <option value="other">Outros</option>
-                  </select>
-                </div>
-                
-                <div class="form-group">
-                  <label for="support-message" class="form-label">Mensagem</label>
-                  <textarea id="support-message" class="form-control" rows="5" required></textarea>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-paper-plane"></i> Enviar Mensagem
-                </button>
-                
-                <div id="form-status" class="form-status"></div>
-              </form>
-            </div>
-          </div>
-        </div>
+      <div class="panel">
+        <h3><i class="fas fa-link"></i> Links úteis</h3>
+        <details><summary>Menucheff</summary><ul>
+          <li><a href="https://appdelivery.menucheff.com/gestor" target="_blank" rel="noopener">Menucheff 1 Gestor ⚙️</a></li>
+          <li><a href="https://appdelivery.menucheff.com/2673" target="_blank" rel="noopener">Menucheff 1 Cliente 🖥️</a></li>
+          <li><a href="https://menucheff.unitechsistemas.com.br/" target="_blank" rel="noopener">Menucheff 2 Gestor ⚙️</a></li>
+          <li><a href="https://app.menucheff.unitechsistemas.com.br/2673" target="_blank" rel="noopener">Menucheff 2 Cliente 🖥️</a></li>
+          <li><a href="https://cardapiodigital.menucheff.com/1m2673" target="_blank" rel="noopener">Cardápio Mesa 📑</a></li>
+          <li><a href="https://cardapiodigital.menucheff.com/1c2673" target="_blank" rel="noopener">Cardápio Cartão 📑</a></li></ul></details>
+        <details><summary>Fiscais</summary><ul>
+          <li><a href="https://drive.google.com/drive/folders/1ZD4xogO-_DHWIvXlruXXaesXDzqvgyV9" target="_blank" rel="noopener">Google Drive 📥</a></li>
+          <li><a href="https://atendimento.tecnospeed.com.br/hc/pt-br/articles/4423079221143-Dicion%C3%A1rio-de-dados-NF-e" target="_blank" rel="noopener">Guia para Notas Fiscais 📄</a></li>
+          <li><a href="http://www.sintegra.gov.br/" target="_blank" rel="noopener">Sintegra</a></li>
+          <li><a href="https://testeportas.com.br/" target="_blank" rel="noopener">Teste de porta 🌎</a></li>
+          <li><a href="https://www.fsist.com.br/" target="_blank" rel="noopener">Baixar NFe 😎</a></li>
+          <li><a href="https://www.nfe.fazenda.gov.br/portal/consultaRecaptcha.aspx?tipoConsulta=resumo&tipoConteudo=7PhJ+gAVw2g=/" target="_blank" rel="noopener">Consultar NFe 📃</a></li>
+          <li><a href="https://dfe-portal.svrs.rs.gov.br/" target="_blank" rel="noopener">Baixar NFe e NFCe Maranhão 🧾</a></li>
+          <li><a href="/phpmyadmin/" target="_blank" rel="noopener">phpMyAdmin 😎</a></li>
+          <li><a href="/ct.php/" target="_blank" rel="noopener">Registros ☠️</a></li></ul></details>
+        <details><summary>Gestores</summary><ul>
+          <li><a href="https://app.unichatbot.com.br/" target="_blank" rel="noopener">Unichatbot 🤖</a></li>
+          <li><a href="https://appunidesk.unitechsistemas.com.br/dashboard" target="_blank" rel="noopener">Gestor para celular 📲</a></li>
+          <li><a href="https://gestor.unitechsistemas.com/financeiro" target="_blank" rel="noopener">Gestor 🧑‍💻</a></li>
+          <li><a href="https://unidesk.unitechsistemas.com.br/inicio" target="_blank" rel="noopener">Unidesk 📊</a></li></ul></details>
+      </div>
+      <div class="panel">
+        <h3><i class="fas fa-comments"></i> Envie uma mensagem</h3><br>
+        <form id="support-form" class="form" style="grid-template-columns:1fr">
+          <div><label for="s-name">Nome</label><input id="s-name" required></div>
+          <div><label for="s-subject">Assunto</label>
+            <select id="s-subject" required><option value="">Selecione...</option><option>Dúvida sobre software</option><option>Problema com driver</option><option>Assuntos de conta</option><option>Outros</option></select></div>
+          <div><label for="s-msg">Mensagem</label><textarea id="s-msg" required></textarea></div>
+          <button class="btn" type="submit"><i class="fas fa-paper-plane"></i> Enviar por e-mail</button>
+        </form>
+        <p class="hint">Abre seu aplicativo de e-mail com a mensagem pronta.</p>
       </div>
     </div>
-  </main>
+  </section>
+</main>
 
-  <!-- Rodapé -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <p>Catálogo Unitech &copy; <span id="current-year">2025</span> - Todos os direitos reservados</p>
-        <div class="footer-links">
-          <a href="#" class="footer-link">Termos de Serviço</a>
-          <a href="#" class="footer-link">Política de Privacidade</a>
-          <a href="#" class="footer-link">Contato</a>
-        </div>
-        <p class="copyright">Desenvolvido com <i class="fas fa-heart" style="color: #ef4444;"></i> pela equipe Unitech</p>
-      </div>
-    </div>
-  </footer>
+<footer>Catálogo Unitech &copy; <span id="year"></span> · Desenvolvido pela equipe Unitech</footer>
 
-  <!-- Scripts -->
-  <script>
-    // Classe para gerenciar o catálogo
-    class CatalogManager {
-      constructor() {
-        this.currentTab = 'software';
-        this.currentAdminTab = 'software';
-        this.currentItemId = null;
-        this.isEditing = false;
-        
-        this.initElements();
-        this.setupEventListeners();
-        this.updateYear();
-      }
-      
-      // Inicializa elementos do DOM
-      initElements() {
-        // Elementos de navegação
-        this.navLinks = document.querySelectorAll('.nav-link');
-        this.adminTabs = document.querySelectorAll('.admin-tab');
-        
-        // Conteúdo das abas
-        this.tabSoftware = document.getElementById('tab-software');
-        this.tabDrivers = document.getElementById('tab-drivers');
-        this.tabSupport = document.getElementById('tab-support');
-        this.adminPanel = document.getElementById('admin-panel');
-        
-        // Elementos de busca e filtro
-        this.searchInput = document.getElementById('searchInput');
-        this.searchBtn = document.getElementById('searchBtn');
-        this.filterContainer = document.getElementById('filterContainer');
-        
-        // Formulários
-        this.softwareForm = document.getElementById('admin-software-form');
-        this.driversForm = document.getElementById('admin-drivers-form');
-        
-        // Campos do formulário de software
-        this.softwareIdInput = document.getElementById('software-id');
-        this.softwareNameInput = document.getElementById('software-name');
-        this.softwareVersionInput = document.getElementById('software-version');
-        this.softwareImageInput = document.getElementById('software-image');
-        this.softwareCategoryInput = document.getElementById('software-category');
-        this.softwareDescriptionInput = document.getElementById('software-description');
-        this.softwareLinkInput = document.getElementById('software-link');
-        this.softwareBadgeInput = document.getElementById('software-badge');
-        this.softwareSaveBtn = document.getElementById('software-save-btn');
-        this.softwareCancelBtn = document.getElementById('software-cancel-btn');
-        this.softwareDeleteBtn = document.getElementById('software-delete-btn');
-        
-        // Campos do formulário de drivers
-        this.driverIdInput = document.getElementById('driver-id');
-        this.driverNameInput = document.getElementById('driver-name');
-        this.driverVersionInput = document.getElementById('driver-version');
-        this.driverImageInput = document.getElementById('driver-image');
-        this.driverCategoryInput = document.getElementById('driver-category');
-        this.driverDescriptionInput = document.getElementById('driver-description');
-        this.driverLinkInput = document.getElementById('driver-link');
-        this.driverBadgeInput = document.getElementById('driver-badge');
-        this.driverSaveBtn = document.getElementById('driver-save-btn');
-        this.driverCancelBtn = document.getElementById('driver-cancel-btn');
-        this.driverDeleteBtn = document.getElementById('driver-delete-btn');
-        
-        // Títulos
-        this.adminPanelTitle = document.getElementById('admin-panel-title');
-        this.adminListTitle = document.getElementById('admin-list-title');
-      }
-      
-      // Configura os event listeners
-      setupEventListeners() {
-        // Navegação
-        this.navLinks.forEach(link => {
-          link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const tab = link.getAttribute('data-tab');
-            this.switchTab(tab);
-          });
-        });
-        
-        // Navegação admin
-        this.adminTabs.forEach(tab => {
-          tab.addEventListener('click', (e) => {
-            e.preventDefault();
-            const adminTab = tab.getAttribute('data-admin-tab');
-            this.switchAdminTab(adminTab);
-          });
-        });
-        
-        // Busca
-        this.searchInput.addEventListener('keyup', (e) => {
-          if (e.key === 'Enter') {
-            this.filterItems();
-          }
-        });
-        
-        this.searchBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          this.filterItems();
-        });
-        
-        // Formulários
-        this.softwareForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          this.saveItem('software');
-        });
-        
-        this.driversForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          this.saveItem('drivers');
-        });
-        
-        // Botões de cancelar
-        this.softwareCancelBtn.addEventListener('click', () => this.clearForm('software'));
-        this.driverCancelBtn.addEventListener('click', () => this.clearForm('drivers'));
-        
-        // Botões de deletar
-        this.softwareDeleteBtn.addEventListener('click', () => this.deleteItem('software'));
-        this.driverDeleteBtn.addEventListener('click', () => this.deleteItem('drivers'));
-        
-        // Delegação de eventos para ações nos cards
-        document.addEventListener('click', (e) => {
-          // Editar item
-          if (e.target.closest('.edit-btn')) {
-            const btn = e.target.closest('.edit-btn');
-            const itemId = parseInt(btn.dataset.id);
-            const type = btn.dataset.type;
-            this.editItem(itemId, type);
-          }
-          
-          // Excluir item
-          if (e.target.closest('.delete-btn')) {
-            const btn = e.target.closest('.delete-btn');
-            const itemId = parseInt(btn.dataset.id);
-            const type = btn.dataset.type;
-            this.confirmDeleteItem(itemId, type);
-          }
-          
-          // Download
-          if (e.target.closest('.download-btn')) {
-            const btn = e.target.closest('.download-btn');
-            const itemId = parseInt(btn.dataset.id);
-            const type = btn.dataset.type;
-            this.downloadItem(itemId, type);
-          }
-        });
-        
-        // Configurar formulário de suporte
-        const supportForm = document.getElementById('supportForm');
-        if (supportForm) {
-          supportForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const statusElement = document.getElementById('form-status');
-            statusElement.className = 'form-status';
-            
-            // Simular envio (em um sistema real seria uma chamada AJAX)
-            setTimeout(() => {
-              statusElement.textContent = 'Mensagem enviada com sucesso! Entraremos em contato em breve.';
-              statusElement.classList.add('success');
-              supportForm.reset();
-            }, 1000);
-          });
-        }
-        
-        // Configurar eventos para as perguntas do FAQ
-        document.querySelectorAll('.faq-question').forEach(question => {
-          question.addEventListener('click', () => {
-            const answer = question.nextElementSibling;
-            const icon = question.querySelector('i');
-            
-            // Alternar visibilidade da resposta
-            if (answer.classList.contains('show')) {
-              answer.classList.remove('show');
-              icon.classList.replace('fa-chevron-down', 'fa-chevron-right');
-            } else {
-              answer.classList.add('show');
-              icon.classList.replace('fa-chevron-right', 'fa-chevron-down');
-            }
-          });
-        });
-      }
-      
-      // Atualiza o ano no rodapé
-      updateYear() {
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-      }
-      
-      // Alterna entre as abas principais
-      switchTab(tab) {
-        this.currentTab = tab;
-        this.updateActiveTab();
-        
-        // Atualiza a barra de pesquisa
-        this.searchInput.value = '';
-        this.filterItems();
-        
-        // Scroll para o topo
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-      
-      // Atualiza a aba ativa
-      updateActiveTab() {
-        // Atualiza navegação principal
-        this.navLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('data-tab') === this.currentTab);
-        });
-        
-        // Atualiza conteúdo das abas
-        this.tabSoftware.classList.toggle('active', this.currentTab === 'software');
-        this.tabDrivers.classList.toggle('active', this.currentTab === 'drivers');
-        this.adminPanel.style.display = this.currentTab === 'admin' ? 'block' : 'none';
-        this.tabSupport.classList.toggle('active', this.currentTab === 'support');
-        
-        // Atualiza título do painel admin
-        if (this.currentTab === 'admin') {
-          this.adminPanelTitle.textContent = 'Gerenciar Itens';
-        }
-      }
-      
-      // Alterna entre as sub-abas do painel admin
-      switchAdminTab(tab) {
-        this.currentAdminTab = tab;
-        
-        // Atualiza navegação admin
-        this.adminTabs.forEach(t => {
-          t.classList.toggle('active', t.getAttribute('data-admin-tab') === tab);
-        });
-        
-        // Atualiza formulários
-        this.softwareForm.style.display = tab === 'software' ? 'grid' : 'none';
-        this.driversForm.style.display = tab === 'drivers' ? 'grid' : 'none';
-        
-        // Atualiza título da lista
-        this.adminListTitle.textContent = tab === 'software' 
-          ? 'Softwares Cadastrados' 
-          : 'Drivers Cadastrados';
-        
-        // Limpa o formulário
-        this.clearForm(tab);
-      }
-      
-      // Filtra os itens
-      filterItems() {
-        const searchTerm = this.searchInput.value.toLowerCase();
-        const container = this.currentTab === 'software' 
-          ? document.getElementById('software-container') 
-          : document.getElementById('drivers-container');
-        
-        const items = container.querySelectorAll('.product-card');
-        
-        items.forEach(item => {
-          const title = item.querySelector('.product-title').textContent.toLowerCase();
-          const description = item.querySelector('.product-description').textContent.toLowerCase();
-          
-          if (title.includes(searchTerm) || description.includes(searchTerm)) {
-            item.style.display = 'flex';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      }
-      
-      // Preenche o formulário para edição
-      editItem(id, type) {
-        // Encontrar o card correspondente
-        const card = document.querySelector(`.edit-btn[data-id="${id}"][data-type="${type}"]`).closest('.product-card');
-        
-        if (!card) return;
-        
-        this.isEditing = true;
-        this.currentItemId = id;
-        
-        // Preencher formulário com os dados
-        const name = card.querySelector('.product-title').textContent;
-        const version = card.querySelector('.product-version').textContent.replace('v', '');
-        const image = card.querySelector('.product-image').src;
-        const description = card.querySelector('.product-description').textContent;
-        const link = card.querySelector('.download-btn').href;
-        
-        // Obter categoria e badge (seria necessário ter esses dados armazenados)
-        // Para este exemplo, vamos preencher apenas os campos visíveis
-        
-        if (type === 'software') {
-          this.softwareIdInput.value = id;
-          this.softwareNameInput.value = name;
-          this.softwareVersionInput.value = version;
-          this.softwareImageInput.value = image;
-          this.softwareDescriptionInput.value = description;
-          this.softwareLinkInput.value = link;
-          this.softwareDeleteBtn.style.display = 'block';
-          
-          // Garante que a sub-aba correta está ativa
-          this.switchAdminTab('software');
-        } else {
-          this.driverIdInput.value = id;
-          this.driverNameInput.value = name;
-          this.driverVersionInput.value = version;
-          this.driverImageInput.value = image;
-          this.driverDescriptionInput.value = description;
-          this.driverLinkInput.value = link;
-          this.driverDeleteBtn.style.display = 'block';
-          
-          // Garante que a sub-aba correta está ativa
-          this.switchAdminTab('drivers');
-        }
-        
-        // Scroll para o formulário
-        document.querySelector('.admin-form').scrollIntoView({ behavior: 'smooth' });
-      }
-      
-      // Salva um item (cria ou atualiza)
-      saveItem(type) {
-        const isSoftware = type === 'software';
-        const saveBtn = isSoftware ? this.softwareSaveBtn : this.driverSaveBtn;
-        const spinner = saveBtn.querySelector('.spinner');
-        const btnText = saveBtn.querySelector('.btn-text');
-        
-        // Mostrar spinner e desativar botão
-        btnText.style.display = 'none';
-        spinner.style.display = 'inline-block';
-        saveBtn.disabled = true;
-        
-        // Mostrar overlay de carregamento
-        document.getElementById('loadingOverlay').style.display = 'flex';
-        
-        const formData = new FormData();
-        formData.append('action', 'save');
-        formData.append('type', type === 'software' ? 'softwares' : 'drivers');
-        
-        if (this.isEditing && this.currentItemId) {
-          formData.append('id', this.currentItemId);
-        }
-        
-        formData.append('name', isSoftware ? this.softwareNameInput.value : this.driverNameInput.value);
-        formData.append('version', isSoftware ? this.softwareVersionInput.value : this.driverVersionInput.value);
-        formData.append('image', isSoftware ? this.softwareImageInput.value : this.driverImageInput.value);
-        formData.append('category', isSoftware ? this.softwareCategoryInput.value : this.driverCategoryInput.value);
-        formData.append('description', isSoftware ? this.softwareDescriptionInput.value : this.driverDescriptionInput.value);
-        formData.append('link', isSoftware ? this.softwareLinkInput.value : this.driverLinkInput.value);
-        formData.append('badge', isSoftware ? this.softwareBadgeInput.value : this.driverBadgeInput.value);
-        
-        // Validação básica
-        if (!formData.get('name') || !formData.get('description') || !formData.get('link')) {
-          this.showNotification('Por favor, preencha todos os campos obrigatórios!', 'error');
-          btnText.style.display = 'inline';
-          spinner.style.display = 'none';
-          saveBtn.disabled = false;
-          document.getElementById('loadingOverlay').style.display = 'none';
-          return;
-        }
-        
-        // Enviar dados para o servidor
-        fetch('', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.json())
-        .then(result => {
-          if (result.success) {
-            this.showNotification(result.message, 'success');
-            // Recarregar a página para atualizar os dados
-            setTimeout(() => {
-              location.reload();
-            }, 1500);
-          } else {
-            this.showNotification(result.message, 'error');
-            btnText.style.display = 'inline';
-            spinner.style.display = 'none';
-            saveBtn.disabled = false;
-            document.getElementById('loadingOverlay').style.display = 'none';
-          }
-        })
-        .catch(error => {
-          console.error('Erro:', error);
-          this.showNotification('Erro ao salvar!', 'error');
-          btnText.style.display = 'inline';
-          spinner.style.display = 'none';
-          saveBtn.disabled = false;
-          document.getElementById('loadingOverlay').style.display = 'none';
-        });
-      }
-      
-      // Confirma a exclusão de um item
-      confirmDeleteItem(id, type) {
-        if (confirm(`Tem certeza que deseja excluir este ${type === 'software' ? 'software' : 'driver'}?`)) {
-          this.deleteItem(id, type);
-        }
-      }
-      
-      // Exclui um item
-      deleteItem(id, type) {
-        const deleteBtn = document.querySelector(`.delete-btn[data-id="${id}"][data-type="${type}"]`);
-        const spinner = deleteBtn.querySelector('.spinner');
-        const btnText = deleteBtn.querySelector('.btn-text');
-        
-        // Mostrar spinner e desativar botão
-        btnText.style.display = 'none';
-        spinner.style.display = 'inline-block';
-        deleteBtn.disabled = true;
-        
-        // Mostrar overlay de carregamento
-        document.getElementById('loadingOverlay').style.display = 'flex';
-        
-        const formData = new FormData();
-        formData.append('action', 'delete');
-        formData.append('type', type === 'software' ? 'softwares' : 'drivers');
-        formData.append('id', id);
-        
-        fetch('', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.json())
-        .then(result => {
-          if (result.success) {
-            this.showNotification(result.message, 'success');
-            // Recarregar a página para atualizar os dados
-            setTimeout(() => {
-              location.reload();
-            }, 1500);
-          } else {
-            this.showNotification(result.message, 'error');
-            btnText.style.display = 'inline';
-            spinner.style.display = 'none';
-            deleteBtn.disabled = false;
-            document.getElementById('loadingOverlay').style.display = 'none';
-          }
-        })
-        .catch(error => {
-          console.error('Erro:', error);
-          this.showNotification('Erro ao excluir!', 'error');
-          btnText.style.display = 'inline';
-          spinner.style.display = 'none';
-          deleteBtn.disabled = false;
-          document.getElementById('loadingOverlay').style.display = 'none';
-        });
-      }
-      
-      // Inicia o download de um item
-      downloadItem(id, type) {
-        // Em um sistema real, você buscaria o link do banco de dados
-        // Para este exemplo, apenas simularemos o download
-        alert(`Iniciando download do ${type === 'software' ? 'software' : 'driver'} ID: ${id}`);
-      }
-      
-      // Limpa o formulário
-      clearForm(type) {
-        this.isEditing = false;
-        this.currentItemId = null;
-        
-        if (type === 'software') {
-          this.softwareForm.reset();
-          this.softwareDeleteBtn.style.display = 'none';
-        } else {
-          this.driversForm.reset();
-          this.driverDeleteBtn.style.display = 'none';
-        }
-      }
-      
-      // Mostra uma notificação
-      showNotification(message, type) {
-        const notificationContainer = document.getElementById('notificationContainer');
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        
-        const icon = document.createElement('i');
-        icon.className = 'icon fas ' + (type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle');
-        
-        const text = document.createElement('span');
-        text.textContent = message;
-        
-        const progress = document.createElement('div');
-        progress.className = 'progress-bar';
-        
-        notification.appendChild(icon);
-        notification.appendChild(text);
-        notification.appendChild(progress);
-        notificationContainer.appendChild(notification);
-        
-        // Mostrar notificação
-        setTimeout(() => {
-          notification.classList.add('show');
-        }, 10);
-        
-        // Remover notificação após 5 segundos
-        setTimeout(() => {
-          notification.classList.remove('show');
-          setTimeout(() => {
-            notification.remove();
-          }, 300);
-        }, 5000);
-      }
-    }
+<script>
+/* ===== DADOS =====
+   No PHP, substitua o objeto abaixo por:  const CATALOG = <?= json_encode($catalogo, JSON_UNESCAPED_UNICODE|JSON_HEX_TAG) ?>;
+   Cada item: {id, name, version, image, category, description, link, badge} */
+const CATALOG = {
+  software: [
+    {id:6,name:"Image Resizer",version:"123",image:"http://192.168.100.10/imagem_pg/imagemresizer.jpg",category:"utility",description:"Redimensionador de imagem",link:"https://transfer.it/t/auHujE03SRpY",badge:"new"},
+    {id:12,name:"EaseUS Todo Backup Home",version:"2024 v16.3.1",image:"http://192.168.100.10/imagem_pg/EaseUS%20todo.png",category:"utility",description:"Software de backup de dados acessível que faz backup de arquivos e pastas.",link:"https://transfer.it/t/mTGqTI91FB7I",badge:"new"},
+    {id:13,name:"HiBit Uninstaller",version:"12",image:"http://192.168.100.10/imagem_pg/download.jpg",category:"security",description:"Utilitário de desinstalação: remove programas, barras de ferramentas, entradas de registro e plugins de navegador.",link:"https://transfer.it/t/zEkJ6J9jTB6D",badge:"free"}
+  ],
+  drivers: [
+    {id:1,name:"Driver de Vídeo NVIDIA",version:"536.99",image:"",category:"video",description:"Driver para placas de vídeo NVIDIA série GeForce RTX.",link:"https://www.nvidia.com/download/driverResults.aspx/123456/",badge:"critical"},
+    {id:2,name:"Driver Wireless Intel",version:"22.180.0.4",image:"",category:"network",description:"Driver para placas de rede sem fio Intel Wi-Fi 6.",link:"https://www.intel.com/content/www/us/en/download/123456.html",badge:""},
+    {id:3,name:"Bematech MP-2800 Th",version:"MP-2800 Th",image:"http://192.168.100.10/imagem/Bematech%20MP-2500.png",category:"printer",description:"Drivers atualizados para Bematech MP-2800 Th.",link:"https://mega.nz/file/KdVzGSzY#Y2K76uBXnY521lZqSezJRm1t3NO0UlTztD9YkkUH9TM",badge:"new"},
+    {id:4,name:"Driver KP-IM602",version:"2024",image:"https://m.media-amazon.com/images/I/5136-7EOzuL._AC_SX679_.jpg",category:"printer",description:"Driver da impressora KP-IM602. Substitua o link de download pelo arquivo real.",link:"https://m.media-amazon.com/images/I/5136-7EOzuL._AC_SX679_.jpg",badge:"new"}
+  ]
+};
+const CATS = {
+  software:{utility:"Utilitários",security:"Segurança",productivity:"Produtividade",database:"Banco de Dados",other:"Outros"},
+  drivers:{video:"Vídeo",audio:"Áudio",network:"Rede",printer:"Impressora",other:"Outros"}
+};
+const BADGES = {new:"Novo",popular:"Popular",free:"Grátis",critical:"Crítico"};
+const ENDPOINT = ''; // mesmo arquivo PHP; ajuste se necessário
 
-    // Inicializa o gerenciador quando o DOM estiver carregado
-    document.addEventListener('DOMContentLoaded', () => {
-      const catalogManager = new CatalogManager();
-    });
-  </script>
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl = u => /^https?:\/\//i.test(u) ? u : '#';
+
+const state = {tab:'software', adminType:'software', cat:'', q:''};
+
+function toast(msg, type = 'success') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type; t.textContent = msg;
+  $('#toasts').append(t); setTimeout(() => t.remove(), 4500);
+}
+
+function thumb(i) {
+  const img = i.image ? `<img src="${esc(safeUrl(i.image))}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'fas fa-box-open ph'}))">` : '<i class="fas fa-box-open ph"></i>';
+  return `<div class="thumb">${img}${i.badge && BADGES[i.badge] ? `<span class="badge b-${esc(i.badge)}">${BADGES[i.badge]}</span>` : ''}</div>`;
+}
+
+function card(i, type, admin) {
+  const foot = admin
+    ? `<div class="row"><button class="btn warn" data-edit="${i.id}"><i class="fas fa-edit"></i> Editar</button><button class="btn err" data-del="${i.id}"><i class="fas fa-trash"></i> Excluir</button></div>`
+    : `<a class="btn" href="${esc(safeUrl(i.link))}" target="_blank" rel="noopener"><i class="fas fa-download"></i> Download</a>`;
+  return `<article class="card">${thumb(i)}<div class="body"><h3>${esc(i.name)}</h3><p class="desc">${esc(i.description)}</p>
+    <div class="meta"><code>v${esc(i.version)}</code><span>${esc(CATS[type][i.category] || '')}</span></div>${foot}</div></article>`;
+}
+
+function matches(i) {
+  const q = state.q.trim().toLowerCase();
+  return (!state.cat || i.category === state.cat) && (!q || (i.name + ' ' + i.description).toLowerCase().includes(q));
+}
+
+function renderList(type) {
+  const sec = $('#v-' + type), all = CATALOG[type], list = all.filter(matches);
+  $('.count', sec).textContent = `(${list.length})`;
+  $('.grid', sec).innerHTML = list.length ? list.map(i => card(i, type)).join('')
+    : '<div class="empty"><i class="fas fa-search"></i>Nada encontrado. Tente outro termo ou remova o filtro.</div>';
+}
+
+function renderChips() {
+  const type = state.tab, used = [...new Set(CATALOG[type].map(i => i.category))];
+  $('#chips').innerHTML = [['', 'Todos'], ...used.map(c => [c, CATS[type][c] || c])]
+    .map(([v, l]) => `<button class="chip" data-cat="${esc(v)}" aria-pressed="${state.cat === v}">${esc(l)}</button>`).join('');
+}
+
+function renderAdmin() {
+  const t = state.adminType;
+  $('#admin-title').textContent = t === 'software' ? 'Softwares cadastrados' : 'Drivers cadastrados';
+  $('#admin-grid').innerHTML = CATALOG[t].map(i => card(i, t, true)).join('') || '<div class="empty">Nenhum item cadastrado.</div>';
+  $('#f-category').innerHTML = '<option value="" disabled selected>Selecione...</option>' + Object.entries(CATS[t]).map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+  document.querySelectorAll('#subtabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.type === t));
+  clearForm();
+}
+
+function show(tab) {
+  state.tab = tab; state.cat = ''; state.q = ''; $('#q').value = '';
+  document.querySelectorAll('#nav button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
+  ['software', 'drivers', 'admin', 'support'].forEach(t => $('#v-' + t).hidden = t !== tab);
+  const browse = tab === 'software' || tab === 'drivers';
+  $('#tools').hidden = !browse;
+  if (browse) { renderChips(); renderList(tab); }
+  if (tab === 'admin') renderAdmin();
+  history.replaceState(null, '', '#' + tab);
+  scrollTo({top: 0});
+}
+
+function clearForm() { $('#form').reset(); $('#f-id').value = ''; $('#f-delete').hidden = true; }
+
+function edit(id) {
+  const i = CATALOG[state.adminType].find(x => x.id == id); if (!i) return;
+  $('#f-id').value = i.id; $('#f-name').value = i.name; $('#f-version').value = i.version;
+  $('#f-image').value = i.image || ''; $('#f-category').value = i.category;
+  $('#f-description').value = i.description; $('#f-link').value = i.link; $('#f-badge').value = i.badge || '';
+  $('#f-delete').hidden = false; $('#form').scrollIntoView({behavior: 'smooth'});
+}
+
+async function send(data, btn, okMsg) {
+  const label = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aguarde...';
+  try {
+    const res = await fetch(ENDPOINT, {method: 'POST', body: data});
+    const r = await res.json();
+    if (!r.success) throw new Error(r.message || 'Falha na operação');
+    toast(r.message || okMsg); setTimeout(() => location.reload(), 1200);
+  } catch (e) {
+    toast(e.message || 'Erro de conexão com o servidor.', 'error');
+    btn.disabled = false; btn.innerHTML = label;
+  }
+}
+
+function remove(id, btn) {
+  if (!confirm('Excluir este item? Esta ação não pode ser desfeita.')) return;
+  const d = new FormData();
+  d.append('action', 'delete'); d.append('type', state.adminType === 'software' ? 'softwares' : 'drivers'); d.append('id', id);
+  send(d, btn, 'Item excluído.');
+}
+
+/* ===== Eventos ===== */
+$('#nav').addEventListener('click', e => { const b = e.target.closest('button'); if (b) show(b.dataset.tab); });
+$('#subtabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { state.adminType = b.dataset.type; renderAdmin(); } });
+$('#chips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) { state.cat = b.dataset.cat; renderChips(); renderList(state.tab); } });
+let timer;
+$('#q').addEventListener('input', e => { clearTimeout(timer); timer = setTimeout(() => { state.q = e.target.value; renderList(state.tab); }, 150); });
+$('#admin-grid').addEventListener('click', e => {
+  const ed = e.target.closest('[data-edit]'), del = e.target.closest('[data-del]');
+  if (ed) edit(ed.dataset.edit); if (del) remove(del.dataset.del, del);
+});
+$('#f-cancel').addEventListener('click', clearForm);
+$('#f-delete').addEventListener('click', e => remove($('#f-id').value, e.currentTarget));
+$('#form').addEventListener('submit', e => {
+  e.preventDefault();
+  const d = new FormData(), id = $('#f-id').value;
+  d.append('action', 'save'); d.append('type', state.adminType === 'software' ? 'softwares' : 'drivers');
+  if (id) d.append('id', id);
+  ['name', 'version', 'image', 'category', 'description', 'link', 'badge'].forEach(k => d.append(k, $('#f-' + k).value.trim()));
+  send(d, $('#f-save'), 'Salvo com sucesso.');
+});
+$('#support-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const body = `Nome: ${$('#s-name').value}\n\n${$('#s-msg').value}`;
+  location.href = `mailto:suporte@tech.com.br?subject=${encodeURIComponent($('#s-subject').value)}&body=${encodeURIComponent(body)}`;
+});
+
+$('#year').textContent = new Date().getFullYear();
+const start = location.hash.slice(1);
+show(['software', 'drivers', 'admin', 'support'].includes(start) ? start : 'software');
+</script>
 </body>
 </html>
